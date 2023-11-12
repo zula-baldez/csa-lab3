@@ -15,6 +15,6 @@ def test_hello(golden, caplog):
     - `out_stdout` -- стандартный вывод транслятора и симулятора
     - `out_log` -- журнал программы
     """
-    print('hello')
+    print("hello")
 
 
