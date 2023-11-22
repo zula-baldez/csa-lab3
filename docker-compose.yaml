@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  computer-simulator:
+    image: ryukzak/python-tools
+    entrypoint: [""]
+    command: 
+      - poetry install
+      - coverage run -m pytest --verbose
+      - find . -type f -name "*.py" | xargs -t coverage report
+      - ruff format --check .
+      - ruff check .

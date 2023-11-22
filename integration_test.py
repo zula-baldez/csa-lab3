@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.golden_test("golden/*.yml")
-def test_hello(golden, caplog):
+def test_(golden, caplog):
     """
     Вход:
 
