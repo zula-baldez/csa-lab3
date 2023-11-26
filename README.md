@@ -27,32 +27,58 @@ semicolon ::= ";"
 op ::= "*" | "/" | "%" | "+" | "-"
 ```
 instruction set
-
-
-
-    WR = 'wr'
-    LD = 'ld'
-    INPUT = 'input'
-    PRINT = 'print'
-    JLE = 'jle'  #less or equals
-    JL = 'jl'  #less
-    JGE = 'jge'  #greater or equals
-    JG = 'jg'  #greater
-    JNE = 'jne'  #not equals
-    JE = 'je'  #equals
-    DIV = 'div'
-    ADD = 'add'
-    SUB = 'sub'
-    MUL = 'mul'
-    INC = 'inc'
-    DEC = 'dec'
-    JUMP = 'jmp'
-    PUSH = 'push'
-    POP = 'pop'
-    HALT = 'hlt'
+    ST_LIT = 'ST_LIT'
+    ST = 'ST'
+    LD = 'LD'
+    LD_LIT = 'LD_LIT'
+    MV = 'MV'
+    READ_CHAR = 'INPUT_CHAR'
+    PRINT_CHAR = 'PRINT_CHAR'
+    JLE = 'JLE'  # less or equals
+    JL = 'JL'  # less
+    JGE = 'JGE'  # greater or equals
+    JG = 'JG'  # greater
+    JNE = 'JNE'  # not equals
+    JE = 'JE'  # equals
+    JUMP = 'JUMP'
+    DIV = 'DIV'
+    ADD = 'ADD'
+    SUB = 'SUB'
+    MUL = 'MUL'
+    CMP = 'CMP'
+    HALT = 'HTL'
 
 https://miro.com/app/board/uXjVNPh5hBQ=/
 
+### Набор инструкций
+
+| Язык | Инструкция | Кол-во тактов | операнды                       |
+|:-----|:-----------|---------------|:-------------------------------|
+|      | ST_ADDR    | 3             | 2 (reg, addr(int)) - прямая    |
+|      | ST         | 4             | 2 (reg, reg) - косвенная       |
+|      | LD_ADDR    | 3             | 2 (reg, addr(int))             |
+|      | LD_LIT     | 2             | 2 (reg, val from  instruction) |
+|      | LD         | 4             | 2 (reg, reg)                   |
+|      | MV         | 3             | 2 (reg, reg)                   |
+|      | READ_CHAR  | 2             | 2 (reg, port)                  |
+|      | PRINT_CHAR | 3             | 2 (reg, port)                  |
+|      | JLE        | 2             | 1 (addr)                       |
+|      | JL         | 0             | 1 (addr)                       |
+|      | JGE        | 0             | 1 (addr)                       |
+|      | JG         | 0             | 1 (addr)                       |
+|      | JNE        | 0             | 1 (addr)                       |
+|      | JE         | 0             | 1 (addr)                       |
+|      | JUMP       | 0             | 1 (addr)                       |
+|      | DIV        | ?             | ??                             |
+|      | ADD        | 0             | 2 (reg, reg)                   |
+|      | ADD_LIT    | 0             | 2 (reg, val)                   |
+|      | SUB        | 0             | ??                             |
+|      | MUL        | 0             | 2(reg1, reg2)                  |
+|      | CMP        | 0             | 2(reg1, reg2)                  |
+|      | PUSH       | 0             | 1(reg)                         |
+|      | POP        | 0             | 1(reg)                         |
+|      | HALT       | 0             | 0                              |
+21 команда - 5(6) бит на опкод и по 13 на 1 и 2 аргумент
 bnf
 
 expr   ::= factor
