@@ -59,15 +59,17 @@ class DataPath:
 
     input_buffer: list[str] = None
 
-    output_buffer: list[str] = None
+    input_ports: dict[int, list[int]] = []
+
+    output_ports: dict[int, list[str]] = []
 
     alu: Alu = None
 
-    def __init__(self, data: list[Word], input_buffer: list[str]):
+    def __init__(self, data: list[Word], ports: dict[int, list[int]]):
         self.memory = data
-        self.input_buffer = input_buffer
-        self.output_buffer = []
         self.alu = Alu()
+        self.input_ports = ports
+
         for reg_num in range(0, 15):
             self.registers[reg_num] = 0
         self.registers[15] = self.mem_size - 1
@@ -97,18 +99,17 @@ class DataPath:
     def neg(self) -> bool:
         return self.alu.neg
 
-    def pick_char(self) -> int:
-        if len(self.input_buffer) == 0:
+    def pick_char(self, port: int) -> int:
+        if len(self.input_ports[port]) == 0:
             return 0
-        return ord(self.input_buffer.pop())
+        return ord(self.input_buffer.pop(0))
 
-    def put_char(self, char: int):
-        self.output_buffer.append(chr(char))
+    def put_char(self, char: int, port: int):
+        self.output_ports[port].append(chr(char))
 
 
 class ControlUnit:
     class Stage(Enum):
-        """Этап выполнения команды. В теории для конвейеризации."""
         FETCH = 0
         DECODE = 1
         EXECUTE = 2
@@ -157,7 +158,7 @@ class ControlUnit:
                 case Opcode.JLE:
                     jmp_flag = self.data_path.neg() == 1 or self.data_path.zero() == 1
             if jmp_flag:
-                self.data_path.latch_reg(13, instr['arg'])
+                self.data_path.latch_reg(13, instr.arg[0])
             else:
                 self.data_path.latch_reg(13, self.data_path.registers[13] + 1)
             self.tick()
@@ -195,8 +196,8 @@ class ControlUnit:
             self.data_path.latch_reg(reg, val)
             self.tick()
         if opcode is Opcode.LD:
-            reg_from: int = self.parse_reg(instr.arg[0])
-            reg_to: int = self.parse_reg(instr.arg[1])
+            reg_to: int = self.parse_reg(instr.arg[0])
+            reg_from: int = self.parse_reg(instr.arg[1])
             reg_data: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[reg_from])
             self.tick()
             self.data_path.latch_reg(14, reg_data)
@@ -214,7 +215,7 @@ class ControlUnit:
             self.data_path.memory_perform(False, True, reg_data)
             self.tick()
         if opcode is Opcode.ST:
-            addr_reg: int = instr.arg[1]
+            addr_reg: int = self.parse_reg(instr.arg[1])
             addr: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[addr_reg])
             self.tick()
             self.data_path.latch_reg(14, addr)
@@ -225,7 +226,7 @@ class ControlUnit:
             self.data_path.memory_perform(False, True, data)
             self.tick()
         if opcode is Opcode.MV:
-            reg_from: int = instr.arg[0]
+            reg_from: int = self.parse_reg(instr.arg[0])
             reg_from_data: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[reg_from])
             self.tick()
             reg_to = self.parse_reg(instr.arg[1])
@@ -233,14 +234,16 @@ class ControlUnit:
             self.tick()
         if opcode is Opcode.READ_CHAR:
             reg: int = self.parse_reg(instr.arg[0])
-            data: int = self.data_path.pick_char()
+            port: int = instr.arg[1]
+            data: int = self.data_path.pick_char(port)
             self.data_path.latch_reg(reg, data)
             self.tick()
         if opcode is Opcode.PRINT_CHAR:
             reg: int = self.parse_reg(instr.arg[0])
             data: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[reg])
+            port: int = instr.arg[1]
             self.tick()
-            self.data_path.put_char(data)
+            self.data_path.put_char(data, port)
             self.tick()
         if opcode in {Opcode.ADD, Opcode.MUL}:
             res: int = self.data_path.perform_arithmetic(opcode, self.data_path.load_reg(self.parse_reg(instr.arg[0])),
@@ -248,6 +251,12 @@ class ControlUnit:
             self.tick()
             self.data_path.latch_reg(self.parse_reg(instr.arg[0]), res)
             self.tick()
+        if opcode in {Opcode.INC, Opcode.DEC}:
+            res: int = self.data_path.perform_arithmetic(opcode, self.data_path.load_reg(self.parse_reg(instr.arg[0])))
+            self.tick()
+            self.data_path.latch_reg(self.parse_reg(instr.arg[0]), res)
+            self.tick()
+
         if opcode is Opcode.ADD_LIT:
             res: int = self.data_path.perform_arithmetic(opcode, self.data_path.load_reg(self.parse_reg(instr.arg[0])),
                                                          instr.arg[1])
@@ -340,23 +349,10 @@ def simulation(mem: list[Word], input_tokens: list[str], limit: int):
     return "".join(data_path.output_buffer), instr_counter, control_unit.current_tick()
 
 
-#
-# input_token = 'penis'
-# c = []
-# code = code.split('\n')
-# for i in code:
-#     c.append(ast.literal_eval(i))
-#
-# for i in c:
-#     i['opcode'] = Opcode[i['opcode']]
-# output, instr_counter, ticks = simulation(
-#     c,
-#     input_tokens=input_token,
-#     data_memory_size=100,
-#     limit=1000,
-# )
+
 # code_file = 'test'
 # input_file = 'inp'
+# logging.getLogger().setLevel(logging.DEBUG)
 #
 # code: list[Word] = read_code(code_file)
 # with open(input_file, encoding="utf-8") as file:
@@ -373,7 +369,6 @@ def simulation(mem: list[Word], input_tokens: list[str], limit: int):
 #
 # print("".join(output))
 # print("instr_counter: ", instr_counter, "ticks:", ticks)
-# logging.getLogger().setLevel(logging.DEBUG)
 
 
 def main(code_file, input_file):
@@ -390,7 +385,7 @@ def main(code_file, input_file):
     output, instr_counter, ticks = simulation(
         code,
         input_tokens=input_token,
-        limit=1000,
+        limit=100000,
     )
 
     print("".join(output))

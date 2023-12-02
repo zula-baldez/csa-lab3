@@ -58,7 +58,7 @@ https://miro.com/app/board/uXjVNPh5hBQ=/
 |      | ST         | 4             | 2 (reg, reg) - косвенная       |
 |      | LD_ADDR    | 3             | 2 (reg, addr(int))             |
 |      | LD_LIT     | 2             | 2 (reg, val from  instruction) |
-|      | LD         | 4             | 2 (reg, reg)                   |
+|      | LD         | 4             | 2 (reg TO, reg FROM(addr))     |
 |      | MV         | 3             | 2 (reg, reg)                   |
 |      | READ_CHAR  | 2             | 2 (reg, port)                  |
 |      | PRINT_CHAR | 3             | 2 (reg, port)                  |

@@ -30,8 +30,8 @@ class Token(Enum):
     RBRACE = r'}'
     SEMICOLON = r';'
     ASSIGN = r'='
-    NAME = r'[a-zA-Z]+'
-    STRING = r'"[0-9a-zA-Z]+"'
+    NAME = r'[a-zA-Z0-9]+'
+    STRING = r'"[0-9a-zA-Z\s]+"'
     NUMBER = r'-?[0-9]+'
 
 
@@ -311,6 +311,16 @@ type2opcode = {
 static_mem_label: str = 'static_mem_start'
 
 
+condition_inverted = {
+    Opcode.JE: Opcode.JNE,
+    Opcode.JGE: Opcode.JL,
+    Opcode.JG: Opcode.JLE,
+    Opcode.JL: Opcode.JGE,
+    Opcode.JLE: Opcode.JG,
+    Opcode.JNE: Opcode.JE,
+}
+
+
 class VariableType(Enum):
     STRING = 'STRING',
     INT = 'INT',
@@ -332,8 +342,7 @@ class Program:
         # конец (когд оффсет узнаем)
         self.reg_to_var: dict[str, str] = {}
         self.var_to_reg: dict[str, str] = {}
-        self.var_types: dict[str, VariableType] = {}
-        self.reg_counter = 0
+        self.reg_counter = 1
 
     def add_instruction(self, opcode: Opcode, arg: list[int | str] = "") -> int:
         self.machine_code.append(Word(self.current_address, opcode, arg))
@@ -377,8 +386,8 @@ class Program:
 
     def _change_reg(self) -> str:
         self.reg_counter += 1
-        if self.reg_counter > 10:
-            self.reg_counter = 0
+        if self.reg_counter >= 9:
+            self.reg_counter = 1
         return 'r' + str(self.reg_counter)
 
     def clear_register_for_variable(self) -> str:
@@ -406,6 +415,9 @@ class Program:
             self.reg_to_var.pop(reg, None)
             self.var_to_reg.pop(name, None)
 
+    def drop_variables_in_registers(self):
+        self.reg_to_var.clear()
+        self.var_to_reg.clear()
 
 def ast_to_machine_code(root: AstNode) -> list[Word]:
     program = Program()
@@ -429,30 +441,30 @@ def ast_to_machine_code_rec(node: AstNode, program: Program) -> None:
         raise Exception('Invalid ast node type {}'.format(node.astType.name))
 
 
-# TODO это пиздец
+# TODO
 # все остальное через стек
 def ast_to_machine_code_math(node: AstNode, program: Program):
     ast_to_machine_code_math_rec(node, program)
-    program.add_instruction(Opcode.POP, ['r10'])
+    program.add_instruction(Opcode.POP, ['r9'])
 
 
 def ast_to_machine_code_math_rec(node: AstNode, program: Program):
     if node.astType == AstType.NUMBER:
-        program.add_instruction(Opcode.LD_LIT, ['r10', int(node.value)])
-        program.add_instruction(Opcode.PUSH, ['r10'])
+        program.add_instruction(Opcode.LD_LIT, ['r9', int(node.value)])
+        program.add_instruction(Opcode.PUSH, ['r9'])
         return
     if node.astType == AstType.NAME:
         reg = program.load_variable(node.value)
-        program.add_instruction(Opcode.MV, [reg, 'r10'])
-        program.add_instruction(Opcode.PUSH, ['r10'])
+        program.add_instruction(Opcode.MV, [reg, 'r9'])
+        program.add_instruction(Opcode.PUSH, ['r9'])
         return
     ast_to_machine_code_math_rec(node.children[0], program)
     ast_to_machine_code_math_rec(node.children[1], program)
 
     program.add_instruction(Opcode.POP, ['r10'])
-    program.add_instruction(Opcode.POP, ['r11'])
-    program.add_instruction(type2opcode[node.astType], ['r10', 'r11'])
-    program.add_instruction(Opcode.PUSH, ['r10'])
+    program.add_instruction(Opcode.POP, ['r9'])
+    program.add_instruction(type2opcode[node.astType], ['r9', 'r10'])
+    program.add_instruction(Opcode.PUSH, ['r9'])
 
 
 def ast_to_machine_code_block(node: AstNode, program: Program) -> int:
@@ -462,39 +474,40 @@ def ast_to_machine_code_block(node: AstNode, program: Program) -> int:
 
 
 def ast_to_machine_code_if_or_while(node: AstNode, program: Program) -> None:
+    program.drop_variables_in_registers()
     comp = node.children[0]
     block_begin: int = program.current_address
     addr_left = parse_expression(comp.children[0], program)
     if addr_left is None:
-        program.add_instruction(Opcode.MV, ['r10', 'r13'])
+        program.add_instruction(Opcode.MV, ['r9', 'r12'])
     else:
-        program.add_instruction(Opcode.LD_ADDR, ['r13', addr_left])
+        program.add_instruction(Opcode.LD_ADDR, ['r12', addr_left])
     addr_right = parse_expression(comp.children[1], program)
     if addr_right is not None:
-        program.add_instruction(Opcode.LD_ADDR, ['r10', addr_right])
+        program.add_instruction(Opcode.LD_ADDR, ['r9', addr_right])
 
-    program.add_instruction(Opcode.CMP, ['r13', 'r10'])
-    comp_addr = program.add_instruction(type2opcode[comp.astType], ['r13', -1])
+    program.add_instruction(Opcode.CMP, ['r12', 'r9'])
+    comp_addr = program.add_instruction(condition_inverted[type2opcode[comp.astType]], [-1])
     block_end: int = ast_to_machine_code_block(node.children[1], program)
     if node.astType == AstType.WHILE:
         program.add_instruction(Opcode.JUMP, [block_begin])
-    program.machine_code[comp_addr].arg = ['r13', block_end + 1]
+    program.machine_code[comp_addr].arg = [block_end + 1]
 
 
-# цикл ввода, захардкожен, так как все известно на этапе компиляции  TODO добавить порты ввода вывода
+# цикл ввода, захардкожен, так как все известно на этапе компиляции
 def ast_to_machine_code_read(program: Program) -> None:
-    program.add_instruction(Opcode.LD_LIT, ['r12', 0])  # счетчик
-    program.add_instruction(Opcode.LD_LIT, ['r11', 0])  # to cmp
-    program.add_instruction(Opcode.LD_LIT, ['r13', 'static_mem_start'])
+    program.add_instruction(Opcode.LD_LIT, ['r11', 0])  # счетчик
+    program.add_instruction(Opcode.LD_LIT, ['r10', 0])  # to cmp
+    program.add_instruction(Opcode.LD_LIT, ['r12', static_mem_label])
     do_while_start = program.current_address
-    program.add_instruction(Opcode.READ_CHAR, ['r10'])
-    program.add_instruction(Opcode.CMP, ['r10', 'r11'])
+    program.add_instruction(Opcode.READ_CHAR, ['r9', 0])
+    program.add_instruction(Opcode.CMP, ['r9', 'r10'])
     program.add_instruction(Opcode.JE, [do_while_start + 7])
+    program.add_instruction(Opcode.ADD_LIT, ['r11', 1])
     program.add_instruction(Opcode.ADD_LIT, ['r12', 1])
-    program.add_instruction(Opcode.ADD_LIT, ['r13', 1])
-    program.add_instruction(Opcode.ST, ['r10', 'r13'])
+    program.add_instruction(Opcode.ST, ['r9', 'r12'])
     program.add_instruction(Opcode.JUMP, [do_while_start])
-    program.add_instruction(Opcode.ST_ADDR, ['r12', 'static_mem_start'])
+    program.add_instruction(Opcode.ST_ADDR, ['r11', static_mem_label])
 
 
 # util func, сохранение значения по адресу(оба не в регистрах)
@@ -512,14 +525,15 @@ def ast_to_machine_code_assign(node: AstNode, program: Program) -> None:
         assert addr is not None
         if node.children[1].astType == AstType.STRING:
             addr_new = program.add_variable_in_static_mem(node.children[1].value, VariableType.STRING)
-            program.clear_variable_in_registers(name)
             st_lit_to_lit(program, addr_new, addr)
+            program.clear_variable_in_registers(name)
         elif node.children[1].astType == AstType.READ:
             ast_to_machine_code_read(program)
+            st_lit_to_lit(program, static_mem_label, addr)
             program.clear_variable_in_registers(name)
-            st_lit_to_lit(program, 'static_mem_start', addr)
         else:
             ast_to_machine_code_math(node.children[1], program)
+            program.add_instruction(Opcode.ST_ADDR, ['r9', addr])
             program.clear_variable_in_registers(name)
 
 
@@ -539,21 +553,23 @@ def ast_to_machine_code_let(node: AstNode, program: Program) -> None:
 def ast_to_machine_code_print(node: AstNode, program: Program) -> None:
     if node.astType == AstType.PRINT_INT:
         ast_to_machine_code_math(node.children[0], program)
-        program.add_instruction(Opcode.PRINT_CHAR, ['r10'])
+        program.add_instruction(Opcode.PRINT_CHAR, ['r9', 0])
     else:
         # todo print literal
         addr: int | None = program.get_variable_offset(node.children[0].value)
         assert addr is not None
-        program.add_instruction(Opcode.LD_LIT, ['r10', addr])  # size
-        program.add_instruction(Opcode.LD_LIT, ['r11', 0])  # счётчик
-        program.add_instruction(Opcode.LD_LIT, ['r12', static_mem_label])
+        program.add_instruction(Opcode.LD_ADDR, ['r10', addr])  # адрес переменной, в которой указатель на значение
+        program.add_instruction(Opcode.LD_ADDR, ['r11', addr])  # адрес переменной, в которой указатель на значение
+        program.add_instruction(Opcode.INC, ['r11'])  # первый байт данных
+        program.add_instruction(Opcode.LD, ['r9', 'r10'])  # теперь в r9 размер
+        program.add_instruction(Opcode.LD_LIT, ['r10', 0])  # счётчик
         while_start: int = program.current_address
-        program.add_instruction(Opcode.CMP, ['r10', 'r11'])
+        program.add_instruction(Opcode.CMP, ['r9', 'r10'])
         program.add_instruction(Opcode.JE, [while_start + 7])
-        program.add_instruction(Opcode.LD, ['r13', 'r12'])
-        program.add_instruction(Opcode.PRINT_CHAR, ['r13'])
+        program.add_instruction(Opcode.LD, ['r12', 'r11'])
+        program.add_instruction(Opcode.PRINT_CHAR, ['r12', 0])
+        program.add_instruction(Opcode.ADD_LIT, ['r10', 1])
         program.add_instruction(Opcode.ADD_LIT, ['r11', 1])
-        program.add_instruction(Opcode.ADD_LIT, ['r12', 1])
         program.add_instruction(Opcode.JUMP, [while_start])
 
 
@@ -566,42 +582,23 @@ def parse_expression(node: AstNode, program: Program) -> int | None:
         return addr
     ast_to_machine_code_math(node, program)
 
+source = 'test'
+target = 'inp'
 
-# TEST --------------------
+with open(source, encoding="utf-8") as f:
+    source = f.read()
 
-tesr11 = '''
-let x = 222222;
-let y = "123123";
-while(x > 5) {
-    y = read();
-	x = x - 2;
-	print_int(x);
-	print_str(y);
-	x = x - 123;
-}
-# '''
+ast = parse(source)
+write_code(target, ast_to_machine_code(ast))
+# def main(source, target):
+#     with open(source, encoding="utf-8") as f:
+#         source = f.read()
+#
+#     ast = parse(source)
+#     write_code(target, ast_to_machine_code(ast))
 
-
-# test = '''
-# let x = 123;
-# x = x + 222;
-# '''
-# tt = parse(test)
-# test = ast_to_machine_code(tt)
-# for t in test:
-#     print(t.opcode, t.index, t.arg)
-# x = 123
-
-
-def main(source, target):
-    with open(source, encoding="utf-8") as f:
-        source = f.read()
-
-    ast = parse(source)
-    write_code(target, ast_to_machine_code(ast))
-
-
-if __name__ == "__main__":
-    assert len(sys.argv) == 2, "Wrong arguments: translator.py <input_file> <target_file>"
-    source, target = sys.argv
-    main(source, target)
+#
+# if __name__ == "__main__":
+#     assert len(sys.argv) == 2, "Wrong arguments: translator.py <input_file> <target_file>"
+#     source, target = sys.argv
+#     main(source, target)
