@@ -1,0 +1,436 @@
+in_source: |-
+  print_str("Who are you?\n");
+  let name = read();
+  print_str(name);
+  print_str("\n");
+  print_str("Hello, ");
+  print_str(name);
+  print_str("!");
+in_stdin: |-
+  Bob
+out_log: |
+  DEBUG emulator:simulation TICK:   0 PC:   0  MEM_OUT: r9 120 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 0, 'r10': 0, 'r11': 0, 'r12': 0, 'r13': 0, 'r14': 0, 'r15': 4095 	  ('0'@Opcode.LD_LIT:Register.r9 120)
+  DEBUG emulator:simulation TICK:   4 PC:   1  MEM_OUT: r9 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 120, 'r10': 0, 'r11': 0, 'r12': 0, 'r13': 1, 'r14': 0, 'r15': 4095 	  ('1'@Opcode.MV:Register.r9 Register.r11)
+  DEBUG emulator:simulation TICK:   9 PC:   2  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 120, 'r10': 0, 'r11': 120, 'r12': 0, 'r13': 2, 'r14': 1, 'r15': 4095 	  ('2'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK:  14 PC:   3  MEM_OUT: r9 r9 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 120, 'r10': 0, 'r11': 121, 'r12': 0, 'r13': 3, 'r14': 2, 'r15': 4095 	  ('3'@Opcode.LD:Register.r9 Register.r9)
+  DEBUG emulator:simulation TICK:  20 PC:   4  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 0, 'r11': 121, 'r12': 0, 'r13': 4, 'r14': 120, 'r15': 4095 	  ('4'@Opcode.LD_LIT:Register.r10 0)
+  DEBUG emulator:simulation TICK:  24 PC:   5  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 0, 'r11': 121, 'r12': 0, 'r13': 5, 'r14': 4, 'r15': 4095 	  ('5'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK:  28 PC:   6  MEM_OUT: 12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 0, 'r11': 121, 'r12': 0, 'r13': 6, 'r14': 5, 'r15': 4095 	  ('6'@Opcode.JE:12 0)
+  DEBUG emulator:simulation TICK:  31 PC:   7  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 0, 'r11': 121, 'r12': 0, 'r13': 7, 'r14': 6, 'r15': 4095 	  ('7'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK:  36 PC:   8  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 1, 'r11': 121, 'r12': 0, 'r13': 8, 'r14': 7, 'r15': 4095 	  ('8'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK:  42 PC:   9  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 1, 'r11': 121, 'r12': 87, 'r13': 9, 'r14': 121, 'r15': 4095 	  ('9'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK:  47 PC:  10  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 1, 'r11': 121, 'r12': 87, 'r13': 10, 'r14': 9, 'r15': 4095 	  ('10'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK:  52 PC:  11  MEM_OUT: 5 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 1, 'r11': 122, 'r12': 87, 'r13': 11, 'r14': 10, 'r15': 4095 	  ('11'@Opcode.JUMP:5 0)
+  DEBUG emulator:simulation TICK:  55 PC:   5  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 1, 'r11': 122, 'r12': 87, 'r13': 5, 'r14': 11, 'r15': 4095 	  ('5'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK:  59 PC:   6  MEM_OUT: 12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 1, 'r11': 122, 'r12': 87, 'r13': 6, 'r14': 5, 'r15': 4095 	  ('6'@Opcode.JE:12 0)
+  DEBUG emulator:simulation TICK:  62 PC:   7  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 1, 'r11': 122, 'r12': 87, 'r13': 7, 'r14': 6, 'r15': 4095 	  ('7'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK:  67 PC:   8  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 2, 'r11': 122, 'r12': 87, 'r13': 8, 'r14': 7, 'r15': 4095 	  ('8'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK:  73 PC:   9  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 2, 'r11': 122, 'r12': 104, 'r13': 9, 'r14': 122, 'r15': 4095 	  ('9'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK:  78 PC:  10  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 2, 'r11': 122, 'r12': 104, 'r13': 10, 'r14': 9, 'r15': 4095 	  ('10'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK:  83 PC:  11  MEM_OUT: 5 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 2, 'r11': 123, 'r12': 104, 'r13': 11, 'r14': 10, 'r15': 4095 	  ('11'@Opcode.JUMP:5 0)
+  DEBUG emulator:simulation TICK:  86 PC:   5  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 2, 'r11': 123, 'r12': 104, 'r13': 5, 'r14': 11, 'r15': 4095 	  ('5'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK:  90 PC:   6  MEM_OUT: 12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 2, 'r11': 123, 'r12': 104, 'r13': 6, 'r14': 5, 'r15': 4095 	  ('6'@Opcode.JE:12 0)
+  DEBUG emulator:simulation TICK:  93 PC:   7  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 2, 'r11': 123, 'r12': 104, 'r13': 7, 'r14': 6, 'r15': 4095 	  ('7'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK:  98 PC:   8  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 3, 'r11': 123, 'r12': 104, 'r13': 8, 'r14': 7, 'r15': 4095 	  ('8'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 104 PC:   9  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 3, 'r11': 123, 'r12': 111, 'r13': 9, 'r14': 123, 'r15': 4095 	  ('9'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 109 PC:  10  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 3, 'r11': 123, 'r12': 111, 'r13': 10, 'r14': 9, 'r15': 4095 	  ('10'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 114 PC:  11  MEM_OUT: 5 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 3, 'r11': 124, 'r12': 111, 'r13': 11, 'r14': 10, 'r15': 4095 	  ('11'@Opcode.JUMP:5 0)
+  DEBUG emulator:simulation TICK: 117 PC:   5  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 3, 'r11': 124, 'r12': 111, 'r13': 5, 'r14': 11, 'r15': 4095 	  ('5'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 121 PC:   6  MEM_OUT: 12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 3, 'r11': 124, 'r12': 111, 'r13': 6, 'r14': 5, 'r15': 4095 	  ('6'@Opcode.JE:12 0)
+  DEBUG emulator:simulation TICK: 124 PC:   7  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 3, 'r11': 124, 'r12': 111, 'r13': 7, 'r14': 6, 'r15': 4095 	  ('7'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 129 PC:   8  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 4, 'r11': 124, 'r12': 111, 'r13': 8, 'r14': 7, 'r15': 4095 	  ('8'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 135 PC:   9  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 4, 'r11': 124, 'r12': 32, 'r13': 9, 'r14': 124, 'r15': 4095 	  ('9'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 140 PC:  10  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 4, 'r11': 124, 'r12': 32, 'r13': 10, 'r14': 9, 'r15': 4095 	  ('10'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 145 PC:  11  MEM_OUT: 5 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 4, 'r11': 125, 'r12': 32, 'r13': 11, 'r14': 10, 'r15': 4095 	  ('11'@Opcode.JUMP:5 0)
+  DEBUG emulator:simulation TICK: 148 PC:   5  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 4, 'r11': 125, 'r12': 32, 'r13': 5, 'r14': 11, 'r15': 4095 	  ('5'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 152 PC:   6  MEM_OUT: 12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 4, 'r11': 125, 'r12': 32, 'r13': 6, 'r14': 5, 'r15': 4095 	  ('6'@Opcode.JE:12 0)
+  DEBUG emulator:simulation TICK: 155 PC:   7  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 4, 'r11': 125, 'r12': 32, 'r13': 7, 'r14': 6, 'r15': 4095 	  ('7'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 160 PC:   8  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 5, 'r11': 125, 'r12': 32, 'r13': 8, 'r14': 7, 'r15': 4095 	  ('8'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 166 PC:   9  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 5, 'r11': 125, 'r12': 97, 'r13': 9, 'r14': 125, 'r15': 4095 	  ('9'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 171 PC:  10  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 5, 'r11': 125, 'r12': 97, 'r13': 10, 'r14': 9, 'r15': 4095 	  ('10'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 176 PC:  11  MEM_OUT: 5 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 5, 'r11': 126, 'r12': 97, 'r13': 11, 'r14': 10, 'r15': 4095 	  ('11'@Opcode.JUMP:5 0)
+  DEBUG emulator:simulation TICK: 179 PC:   5  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 5, 'r11': 126, 'r12': 97, 'r13': 5, 'r14': 11, 'r15': 4095 	  ('5'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 183 PC:   6  MEM_OUT: 12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 5, 'r11': 126, 'r12': 97, 'r13': 6, 'r14': 5, 'r15': 4095 	  ('6'@Opcode.JE:12 0)
+  DEBUG emulator:simulation TICK: 186 PC:   7  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 5, 'r11': 126, 'r12': 97, 'r13': 7, 'r14': 6, 'r15': 4095 	  ('7'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 191 PC:   8  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 6, 'r11': 126, 'r12': 97, 'r13': 8, 'r14': 7, 'r15': 4095 	  ('8'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 197 PC:   9  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 6, 'r11': 126, 'r12': 114, 'r13': 9, 'r14': 126, 'r15': 4095 	  ('9'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 202 PC:  10  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 6, 'r11': 126, 'r12': 114, 'r13': 10, 'r14': 9, 'r15': 4095 	  ('10'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 207 PC:  11  MEM_OUT: 5 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 6, 'r11': 127, 'r12': 114, 'r13': 11, 'r14': 10, 'r15': 4095 	  ('11'@Opcode.JUMP:5 0)
+  DEBUG emulator:simulation TICK: 210 PC:   5  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 6, 'r11': 127, 'r12': 114, 'r13': 5, 'r14': 11, 'r15': 4095 	  ('5'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 214 PC:   6  MEM_OUT: 12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 6, 'r11': 127, 'r12': 114, 'r13': 6, 'r14': 5, 'r15': 4095 	  ('6'@Opcode.JE:12 0)
+  DEBUG emulator:simulation TICK: 217 PC:   7  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 6, 'r11': 127, 'r12': 114, 'r13': 7, 'r14': 6, 'r15': 4095 	  ('7'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 222 PC:   8  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 7, 'r11': 127, 'r12': 114, 'r13': 8, 'r14': 7, 'r15': 4095 	  ('8'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 228 PC:   9  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 7, 'r11': 127, 'r12': 101, 'r13': 9, 'r14': 127, 'r15': 4095 	  ('9'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 233 PC:  10  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 7, 'r11': 127, 'r12': 101, 'r13': 10, 'r14': 9, 'r15': 4095 	  ('10'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 238 PC:  11  MEM_OUT: 5 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 7, 'r11': 128, 'r12': 101, 'r13': 11, 'r14': 10, 'r15': 4095 	  ('11'@Opcode.JUMP:5 0)
+  DEBUG emulator:simulation TICK: 241 PC:   5  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 7, 'r11': 128, 'r12': 101, 'r13': 5, 'r14': 11, 'r15': 4095 	  ('5'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 245 PC:   6  MEM_OUT: 12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 7, 'r11': 128, 'r12': 101, 'r13': 6, 'r14': 5, 'r15': 4095 	  ('6'@Opcode.JE:12 0)
+  DEBUG emulator:simulation TICK: 248 PC:   7  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 7, 'r11': 128, 'r12': 101, 'r13': 7, 'r14': 6, 'r15': 4095 	  ('7'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 253 PC:   8  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 8, 'r11': 128, 'r12': 101, 'r13': 8, 'r14': 7, 'r15': 4095 	  ('8'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 259 PC:   9  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 8, 'r11': 128, 'r12': 32, 'r13': 9, 'r14': 128, 'r15': 4095 	  ('9'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 264 PC:  10  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 8, 'r11': 128, 'r12': 32, 'r13': 10, 'r14': 9, 'r15': 4095 	  ('10'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 269 PC:  11  MEM_OUT: 5 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 8, 'r11': 129, 'r12': 32, 'r13': 11, 'r14': 10, 'r15': 4095 	  ('11'@Opcode.JUMP:5 0)
+  DEBUG emulator:simulation TICK: 272 PC:   5  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 8, 'r11': 129, 'r12': 32, 'r13': 5, 'r14': 11, 'r15': 4095 	  ('5'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 276 PC:   6  MEM_OUT: 12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 8, 'r11': 129, 'r12': 32, 'r13': 6, 'r14': 5, 'r15': 4095 	  ('6'@Opcode.JE:12 0)
+  DEBUG emulator:simulation TICK: 279 PC:   7  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 8, 'r11': 129, 'r12': 32, 'r13': 7, 'r14': 6, 'r15': 4095 	  ('7'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 284 PC:   8  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 9, 'r11': 129, 'r12': 32, 'r13': 8, 'r14': 7, 'r15': 4095 	  ('8'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 290 PC:   9  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 9, 'r11': 129, 'r12': 121, 'r13': 9, 'r14': 129, 'r15': 4095 	  ('9'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 295 PC:  10  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 9, 'r11': 129, 'r12': 121, 'r13': 10, 'r14': 9, 'r15': 4095 	  ('10'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 300 PC:  11  MEM_OUT: 5 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 9, 'r11': 130, 'r12': 121, 'r13': 11, 'r14': 10, 'r15': 4095 	  ('11'@Opcode.JUMP:5 0)
+  DEBUG emulator:simulation TICK: 303 PC:   5  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 9, 'r11': 130, 'r12': 121, 'r13': 5, 'r14': 11, 'r15': 4095 	  ('5'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 307 PC:   6  MEM_OUT: 12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 9, 'r11': 130, 'r12': 121, 'r13': 6, 'r14': 5, 'r15': 4095 	  ('6'@Opcode.JE:12 0)
+  DEBUG emulator:simulation TICK: 310 PC:   7  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 9, 'r11': 130, 'r12': 121, 'r13': 7, 'r14': 6, 'r15': 4095 	  ('7'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 315 PC:   8  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 10, 'r11': 130, 'r12': 121, 'r13': 8, 'r14': 7, 'r15': 4095 	  ('8'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 321 PC:   9  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 10, 'r11': 130, 'r12': 111, 'r13': 9, 'r14': 130, 'r15': 4095 	  ('9'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 326 PC:  10  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 10, 'r11': 130, 'r12': 111, 'r13': 10, 'r14': 9, 'r15': 4095 	  ('10'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 331 PC:  11  MEM_OUT: 5 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 10, 'r11': 131, 'r12': 111, 'r13': 11, 'r14': 10, 'r15': 4095 	  ('11'@Opcode.JUMP:5 0)
+  DEBUG emulator:simulation TICK: 334 PC:   5  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 10, 'r11': 131, 'r12': 111, 'r13': 5, 'r14': 11, 'r15': 4095 	  ('5'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 338 PC:   6  MEM_OUT: 12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 10, 'r11': 131, 'r12': 111, 'r13': 6, 'r14': 5, 'r15': 4095 	  ('6'@Opcode.JE:12 0)
+  DEBUG emulator:simulation TICK: 341 PC:   7  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 10, 'r11': 131, 'r12': 111, 'r13': 7, 'r14': 6, 'r15': 4095 	  ('7'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 346 PC:   8  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 11, 'r11': 131, 'r12': 111, 'r13': 8, 'r14': 7, 'r15': 4095 	  ('8'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 352 PC:   9  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 11, 'r11': 131, 'r12': 117, 'r13': 9, 'r14': 131, 'r15': 4095 	  ('9'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 357 PC:  10  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 11, 'r11': 131, 'r12': 117, 'r13': 10, 'r14': 9, 'r15': 4095 	  ('10'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 362 PC:  11  MEM_OUT: 5 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 11, 'r11': 132, 'r12': 117, 'r13': 11, 'r14': 10, 'r15': 4095 	  ('11'@Opcode.JUMP:5 0)
+  DEBUG emulator:simulation TICK: 365 PC:   5  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 11, 'r11': 132, 'r12': 117, 'r13': 5, 'r14': 11, 'r15': 4095 	  ('5'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 369 PC:   6  MEM_OUT: 12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 11, 'r11': 132, 'r12': 117, 'r13': 6, 'r14': 5, 'r15': 4095 	  ('6'@Opcode.JE:12 0)
+  DEBUG emulator:simulation TICK: 372 PC:   7  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 11, 'r11': 132, 'r12': 117, 'r13': 7, 'r14': 6, 'r15': 4095 	  ('7'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 377 PC:   8  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 12, 'r11': 132, 'r12': 117, 'r13': 8, 'r14': 7, 'r15': 4095 	  ('8'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 383 PC:   9  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 12, 'r11': 132, 'r12': 63, 'r13': 9, 'r14': 132, 'r15': 4095 	  ('9'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 388 PC:  10  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 12, 'r11': 132, 'r12': 63, 'r13': 10, 'r14': 9, 'r15': 4095 	  ('10'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 393 PC:  11  MEM_OUT: 5 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 12, 'r11': 133, 'r12': 63, 'r13': 11, 'r14': 10, 'r15': 4095 	  ('11'@Opcode.JUMP:5 0)
+  DEBUG emulator:simulation TICK: 396 PC:   5  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 12, 'r11': 133, 'r12': 63, 'r13': 5, 'r14': 11, 'r15': 4095 	  ('5'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 400 PC:   6  MEM_OUT: 12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 12, 'r11': 133, 'r12': 63, 'r13': 6, 'r14': 5, 'r15': 4095 	  ('6'@Opcode.JE:12 0)
+  DEBUG emulator:simulation TICK: 403 PC:   7  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 12, 'r11': 133, 'r12': 63, 'r13': 7, 'r14': 6, 'r15': 4095 	  ('7'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 408 PC:   8  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 13, 'r11': 133, 'r12': 63, 'r13': 8, 'r14': 7, 'r15': 4095 	  ('8'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 414 PC:   9  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 13, 'r11': 133, 'r12': 10, 'r13': 9, 'r14': 133, 'r15': 4095 	  ('9'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 419 PC:  10  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 13, 'r11': 133, 'r12': 10, 'r13': 10, 'r14': 9, 'r15': 4095 	  ('10'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 424 PC:  11  MEM_OUT: 5 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 13, 'r11': 134, 'r12': 10, 'r13': 11, 'r14': 10, 'r15': 4095 	  ('11'@Opcode.JUMP:5 0)
+  DEBUG emulator:simulation TICK: 427 PC:   5  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 13, 'r11': 134, 'r12': 10, 'r13': 5, 'r14': 11, 'r15': 4095 	  ('5'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 431 PC:   6  MEM_OUT: 12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 13, 'r11': 134, 'r12': 10, 'r13': 6, 'r14': 5, 'r15': 4095 	  ('6'@Opcode.JE:12 0)
+  DEBUG emulator:simulation TICK: 434 PC:  12  MEM_OUT: r3 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 13, 'r11': 134, 'r12': 10, 'r13': 12, 'r14': 6, 'r15': 4095 	  ('12'@Opcode.LD_LIT:Register.r3 0)
+  DEBUG emulator:simulation TICK: 438 PC:  13  MEM_OUT: r3 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 13, 'r11': 134, 'r12': 10, 'r13': 13, 'r14': 12, 'r15': 4095 	  ('13'@Opcode.PUSH:Register.r3 0)
+  DEBUG emulator:simulation TICK: 447 PC:  14  MEM_OUT: r9 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 13, 'r11': 134, 'r12': 10, 'r13': 14, 'r14': 4095, 'r15': 4094 	  ('14'@Opcode.LD_LIT:Register.r9 0)
+  DEBUG emulator:simulation TICK: 451 PC:  15  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 0, 'r10': 13, 'r11': 134, 'r12': 10, 'r13': 15, 'r14': 14, 'r15': 4094 	  ('15'@Opcode.LD_LIT:Register.r11 0)
+  DEBUG emulator:simulation TICK: 455 PC:  16  MEM_OUT: r12 120 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 0, 'r10': 13, 'r11': 0, 'r12': 10, 'r13': 16, 'r14': 15, 'r15': 4094 	  ('16'@Opcode.LD_LIT:Register.r12 120)
+  DEBUG emulator:simulation TICK: 459 PC:  17  MEM_OUT: r9 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 0, 'r10': 13, 'r11': 0, 'r12': 120, 'r13': 17, 'r14': 16, 'r15': 4094 	  ('17'@Opcode.READ:Register.r9 0)
+  DEBUG emulator:simulation TICK: 463 PC:  18  MEM_OUT: r9 r0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 66, 'r10': 13, 'r11': 0, 'r12': 120, 'r13': 18, 'r14': 17, 'r15': 4094 	  ('18'@Opcode.CMP:Register.r9 Register.r0)
+  DEBUG emulator:simulation TICK: 467 PC:  19  MEM_OUT: 24 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 66, 'r10': 13, 'r11': 0, 'r12': 120, 'r13': 19, 'r14': 18, 'r15': 4094 	  ('19'@Opcode.JE:24 0)
+  DEBUG emulator:simulation TICK: 470 PC:  20  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 66, 'r10': 13, 'r11': 0, 'r12': 120, 'r13': 20, 'r14': 19, 'r15': 4094 	  ('20'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 475 PC:  21  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 66, 'r10': 13, 'r11': 1, 'r12': 120, 'r13': 21, 'r14': 20, 'r15': 4094 	  ('21'@Opcode.INC:Register.r12 0)
+  DEBUG emulator:simulation TICK: 480 PC:  22  MEM_OUT: r9 r12 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 66, 'r10': 13, 'r11': 1, 'r12': 121, 'r13': 22, 'r14': 21, 'r15': 4094 	  ('22'@Opcode.ST:Register.r9 Register.r12)
+  DEBUG emulator:simulation TICK: 487 PC:  23  MEM_OUT: 17 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 66, 'r10': 13, 'r11': 1, 'r12': 121, 'r13': 23, 'r14': 121, 'r15': 4094 	  ('23'@Opcode.JUMP:17 0)
+  DEBUG emulator:simulation TICK: 490 PC:  17  MEM_OUT: r9 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 66, 'r10': 13, 'r11': 1, 'r12': 121, 'r13': 17, 'r14': 23, 'r15': 4094 	  ('17'@Opcode.READ:Register.r9 0)
+  DEBUG emulator:simulation TICK: 494 PC:  18  MEM_OUT: r9 r0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 111, 'r10': 13, 'r11': 1, 'r12': 121, 'r13': 18, 'r14': 17, 'r15': 4094 	  ('18'@Opcode.CMP:Register.r9 Register.r0)
+  DEBUG emulator:simulation TICK: 498 PC:  19  MEM_OUT: 24 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 111, 'r10': 13, 'r11': 1, 'r12': 121, 'r13': 19, 'r14': 18, 'r15': 4094 	  ('19'@Opcode.JE:24 0)
+  DEBUG emulator:simulation TICK: 501 PC:  20  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 111, 'r10': 13, 'r11': 1, 'r12': 121, 'r13': 20, 'r14': 19, 'r15': 4094 	  ('20'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 506 PC:  21  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 111, 'r10': 13, 'r11': 2, 'r12': 121, 'r13': 21, 'r14': 20, 'r15': 4094 	  ('21'@Opcode.INC:Register.r12 0)
+  DEBUG emulator:simulation TICK: 511 PC:  22  MEM_OUT: r9 r12 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 111, 'r10': 13, 'r11': 2, 'r12': 122, 'r13': 22, 'r14': 21, 'r15': 4094 	  ('22'@Opcode.ST:Register.r9 Register.r12)
+  DEBUG emulator:simulation TICK: 518 PC:  23  MEM_OUT: 17 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 111, 'r10': 13, 'r11': 2, 'r12': 122, 'r13': 23, 'r14': 122, 'r15': 4094 	  ('23'@Opcode.JUMP:17 0)
+  DEBUG emulator:simulation TICK: 521 PC:  17  MEM_OUT: r9 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 111, 'r10': 13, 'r11': 2, 'r12': 122, 'r13': 17, 'r14': 23, 'r15': 4094 	  ('17'@Opcode.READ:Register.r9 0)
+  DEBUG emulator:simulation TICK: 525 PC:  18  MEM_OUT: r9 r0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 98, 'r10': 13, 'r11': 2, 'r12': 122, 'r13': 18, 'r14': 17, 'r15': 4094 	  ('18'@Opcode.CMP:Register.r9 Register.r0)
+  DEBUG emulator:simulation TICK: 529 PC:  19  MEM_OUT: 24 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 98, 'r10': 13, 'r11': 2, 'r12': 122, 'r13': 19, 'r14': 18, 'r15': 4094 	  ('19'@Opcode.JE:24 0)
+  DEBUG emulator:simulation TICK: 532 PC:  20  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 98, 'r10': 13, 'r11': 2, 'r12': 122, 'r13': 20, 'r14': 19, 'r15': 4094 	  ('20'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 537 PC:  21  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 98, 'r10': 13, 'r11': 3, 'r12': 122, 'r13': 21, 'r14': 20, 'r15': 4094 	  ('21'@Opcode.INC:Register.r12 0)
+  DEBUG emulator:simulation TICK: 542 PC:  22  MEM_OUT: r9 r12 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 98, 'r10': 13, 'r11': 3, 'r12': 123, 'r13': 22, 'r14': 21, 'r15': 4094 	  ('22'@Opcode.ST:Register.r9 Register.r12)
+  DEBUG emulator:simulation TICK: 549 PC:  23  MEM_OUT: 17 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 98, 'r10': 13, 'r11': 3, 'r12': 123, 'r13': 23, 'r14': 123, 'r15': 4094 	  ('23'@Opcode.JUMP:17 0)
+  DEBUG emulator:simulation TICK: 552 PC:  17  MEM_OUT: r9 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 98, 'r10': 13, 'r11': 3, 'r12': 123, 'r13': 17, 'r14': 23, 'r15': 4094 	  ('17'@Opcode.READ:Register.r9 0)
+  DEBUG emulator:simulation TICK: 556 PC:  18  MEM_OUT: r9 r0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 0, 'r10': 13, 'r11': 3, 'r12': 123, 'r13': 18, 'r14': 17, 'r15': 4094 	  ('18'@Opcode.CMP:Register.r9 Register.r0)
+  DEBUG emulator:simulation TICK: 560 PC:  19  MEM_OUT: 24 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 0, 'r10': 13, 'r11': 3, 'r12': 123, 'r13': 19, 'r14': 18, 'r15': 4094 	  ('19'@Opcode.JE:24 0)
+  DEBUG emulator:simulation TICK: 563 PC:  24  MEM_OUT: r11 120 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 0, 'r10': 13, 'r11': 3, 'r12': 123, 'r13': 24, 'r14': 19, 'r15': 4094 	  ('24'@Opcode.ST_ADDR:Register.r11 120)
+  DEBUG emulator:simulation TICK: 569 PC:  25  MEM_OUT: r4 120 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 0, 'r10': 13, 'r11': 3, 'r12': 123, 'r13': 25, 'r14': 120, 'r15': 4094 	  ('25'@Opcode.LD_LIT:Register.r4 120)
+  DEBUG emulator:simulation TICK: 573 PC:  26  MEM_OUT: r4 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 0, 'r10': 13, 'r11': 3, 'r12': 123, 'r13': 26, 'r14': 25, 'r15': 4094 	  ('26'@Opcode.ST_STACK:Register.r4 0)
+  DEBUG emulator:simulation TICK: 579 PC:  27  MEM_OUT: r9 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 0, 'r10': 13, 'r11': 3, 'r12': 123, 'r13': 27, 'r14': 4095, 'r15': 4094 	  ('27'@Opcode.LD_STACK:Register.r9 0)
+  DEBUG emulator:simulation TICK: 585 PC:  28  MEM_OUT: r9 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 120, 'r10': 13, 'r11': 3, 'r12': 123, 'r13': 28, 'r14': 4095, 'r15': 4094 	  ('28'@Opcode.MV:Register.r9 Register.r11)
+  DEBUG emulator:simulation TICK: 590 PC:  29  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 120, 'r10': 13, 'r11': 120, 'r12': 123, 'r13': 29, 'r14': 28, 'r15': 4094 	  ('29'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 595 PC:  30  MEM_OUT: r9 r9 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 120, 'r10': 13, 'r11': 121, 'r12': 123, 'r13': 30, 'r14': 29, 'r15': 4094 	  ('30'@Opcode.LD:Register.r9 Register.r9)
+  DEBUG emulator:simulation TICK: 601 PC:  31  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 13, 'r11': 121, 'r12': 123, 'r13': 31, 'r14': 120, 'r15': 4094 	  ('31'@Opcode.LD_LIT:Register.r10 0)
+  DEBUG emulator:simulation TICK: 605 PC:  32  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 0, 'r11': 121, 'r12': 123, 'r13': 32, 'r14': 31, 'r15': 4094 	  ('32'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 609 PC:  33  MEM_OUT: 39 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 0, 'r11': 121, 'r12': 123, 'r13': 33, 'r14': 32, 'r15': 4094 	  ('33'@Opcode.JE:39 0)
+  DEBUG emulator:simulation TICK: 612 PC:  34  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 0, 'r11': 121, 'r12': 123, 'r13': 34, 'r14': 33, 'r15': 4094 	  ('34'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 617 PC:  35  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 1, 'r11': 121, 'r12': 123, 'r13': 35, 'r14': 34, 'r15': 4094 	  ('35'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 623 PC:  36  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 1, 'r11': 121, 'r12': 66, 'r13': 36, 'r14': 121, 'r15': 4094 	  ('36'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 628 PC:  37  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 1, 'r11': 121, 'r12': 66, 'r13': 37, 'r14': 36, 'r15': 4094 	  ('37'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 633 PC:  38  MEM_OUT: 32 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 1, 'r11': 122, 'r12': 66, 'r13': 38, 'r14': 37, 'r15': 4094 	  ('38'@Opcode.JUMP:32 0)
+  DEBUG emulator:simulation TICK: 636 PC:  32  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 1, 'r11': 122, 'r12': 66, 'r13': 32, 'r14': 38, 'r15': 4094 	  ('32'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 640 PC:  33  MEM_OUT: 39 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 1, 'r11': 122, 'r12': 66, 'r13': 33, 'r14': 32, 'r15': 4094 	  ('33'@Opcode.JE:39 0)
+  DEBUG emulator:simulation TICK: 643 PC:  34  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 1, 'r11': 122, 'r12': 66, 'r13': 34, 'r14': 33, 'r15': 4094 	  ('34'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 648 PC:  35  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 2, 'r11': 122, 'r12': 66, 'r13': 35, 'r14': 34, 'r15': 4094 	  ('35'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 654 PC:  36  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 2, 'r11': 122, 'r12': 111, 'r13': 36, 'r14': 122, 'r15': 4094 	  ('36'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 659 PC:  37  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 2, 'r11': 122, 'r12': 111, 'r13': 37, 'r14': 36, 'r15': 4094 	  ('37'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 664 PC:  38  MEM_OUT: 32 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 2, 'r11': 123, 'r12': 111, 'r13': 38, 'r14': 37, 'r15': 4094 	  ('38'@Opcode.JUMP:32 0)
+  DEBUG emulator:simulation TICK: 667 PC:  32  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 2, 'r11': 123, 'r12': 111, 'r13': 32, 'r14': 38, 'r15': 4094 	  ('32'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 671 PC:  33  MEM_OUT: 39 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 2, 'r11': 123, 'r12': 111, 'r13': 33, 'r14': 32, 'r15': 4094 	  ('33'@Opcode.JE:39 0)
+  DEBUG emulator:simulation TICK: 674 PC:  34  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 2, 'r11': 123, 'r12': 111, 'r13': 34, 'r14': 33, 'r15': 4094 	  ('34'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 679 PC:  35  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 3, 'r11': 123, 'r12': 111, 'r13': 35, 'r14': 34, 'r15': 4094 	  ('35'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 685 PC:  36  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 3, 'r11': 123, 'r12': 98, 'r13': 36, 'r14': 123, 'r15': 4094 	  ('36'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 690 PC:  37  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 3, 'r11': 123, 'r12': 98, 'r13': 37, 'r14': 36, 'r15': 4094 	  ('37'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 695 PC:  38  MEM_OUT: 32 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 3, 'r11': 124, 'r12': 98, 'r13': 38, 'r14': 37, 'r15': 4094 	  ('38'@Opcode.JUMP:32 0)
+  DEBUG emulator:simulation TICK: 698 PC:  32  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 3, 'r11': 124, 'r12': 98, 'r13': 32, 'r14': 38, 'r15': 4094 	  ('32'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 702 PC:  33  MEM_OUT: 39 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 3, 'r11': 124, 'r12': 98, 'r13': 33, 'r14': 32, 'r15': 4094 	  ('33'@Opcode.JE:39 0)
+  DEBUG emulator:simulation TICK: 705 PC:  39  MEM_OUT: r9 134 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 3, 'r11': 124, 'r12': 98, 'r13': 39, 'r14': 33, 'r15': 4094 	  ('39'@Opcode.LD_LIT:Register.r9 134)
+  DEBUG emulator:simulation TICK: 709 PC:  40  MEM_OUT: r9 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 134, 'r10': 3, 'r11': 124, 'r12': 98, 'r13': 40, 'r14': 39, 'r15': 4094 	  ('40'@Opcode.MV:Register.r9 Register.r11)
+  DEBUG emulator:simulation TICK: 714 PC:  41  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 134, 'r10': 3, 'r11': 134, 'r12': 98, 'r13': 41, 'r14': 40, 'r15': 4094 	  ('41'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 719 PC:  42  MEM_OUT: r9 r9 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 134, 'r10': 3, 'r11': 135, 'r12': 98, 'r13': 42, 'r14': 41, 'r15': 4094 	  ('42'@Opcode.LD:Register.r9 Register.r9)
+  DEBUG emulator:simulation TICK: 725 PC:  43  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 3, 'r11': 135, 'r12': 98, 'r13': 43, 'r14': 134, 'r15': 4094 	  ('43'@Opcode.LD_LIT:Register.r10 0)
+  DEBUG emulator:simulation TICK: 729 PC:  44  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 0, 'r11': 135, 'r12': 98, 'r13': 44, 'r14': 43, 'r15': 4094 	  ('44'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 733 PC:  45  MEM_OUT: 51 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 0, 'r11': 135, 'r12': 98, 'r13': 45, 'r14': 44, 'r15': 4094 	  ('45'@Opcode.JE:51 0)
+  DEBUG emulator:simulation TICK: 736 PC:  46  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 0, 'r11': 135, 'r12': 98, 'r13': 46, 'r14': 45, 'r15': 4094 	  ('46'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 741 PC:  47  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 1, 'r11': 135, 'r12': 98, 'r13': 47, 'r14': 46, 'r15': 4094 	  ('47'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 747 PC:  48  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 1, 'r11': 135, 'r12': 10, 'r13': 48, 'r14': 135, 'r15': 4094 	  ('48'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 752 PC:  49  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 1, 'r11': 135, 'r12': 10, 'r13': 49, 'r14': 48, 'r15': 4094 	  ('49'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 757 PC:  50  MEM_OUT: 44 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 1, 'r11': 136, 'r12': 10, 'r13': 50, 'r14': 49, 'r15': 4094 	  ('50'@Opcode.JUMP:44 0)
+  DEBUG emulator:simulation TICK: 760 PC:  44  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 1, 'r11': 136, 'r12': 10, 'r13': 44, 'r14': 50, 'r15': 4094 	  ('44'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 764 PC:  45  MEM_OUT: 51 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 1, 'r11': 136, 'r12': 10, 'r13': 45, 'r14': 44, 'r15': 4094 	  ('45'@Opcode.JE:51 0)
+  DEBUG emulator:simulation TICK: 767 PC:  51  MEM_OUT: r9 136 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 1, 'r11': 136, 'r12': 10, 'r13': 51, 'r14': 45, 'r15': 4094 	  ('51'@Opcode.LD_LIT:Register.r9 136)
+  DEBUG emulator:simulation TICK: 771 PC:  52  MEM_OUT: r9 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 136, 'r10': 1, 'r11': 136, 'r12': 10, 'r13': 52, 'r14': 51, 'r15': 4094 	  ('52'@Opcode.MV:Register.r9 Register.r11)
+  DEBUG emulator:simulation TICK: 776 PC:  53  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 136, 'r10': 1, 'r11': 136, 'r12': 10, 'r13': 53, 'r14': 52, 'r15': 4094 	  ('53'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 781 PC:  54  MEM_OUT: r9 r9 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 136, 'r10': 1, 'r11': 137, 'r12': 10, 'r13': 54, 'r14': 53, 'r15': 4094 	  ('54'@Opcode.LD:Register.r9 Register.r9)
+  DEBUG emulator:simulation TICK: 787 PC:  55  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 1, 'r11': 137, 'r12': 10, 'r13': 55, 'r14': 136, 'r15': 4094 	  ('55'@Opcode.LD_LIT:Register.r10 0)
+  DEBUG emulator:simulation TICK: 791 PC:  56  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 0, 'r11': 137, 'r12': 10, 'r13': 56, 'r14': 55, 'r15': 4094 	  ('56'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 795 PC:  57  MEM_OUT: 63 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 0, 'r11': 137, 'r12': 10, 'r13': 57, 'r14': 56, 'r15': 4094 	  ('57'@Opcode.JE:63 0)
+  DEBUG emulator:simulation TICK: 798 PC:  58  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 0, 'r11': 137, 'r12': 10, 'r13': 58, 'r14': 57, 'r15': 4094 	  ('58'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 803 PC:  59  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 1, 'r11': 137, 'r12': 10, 'r13': 59, 'r14': 58, 'r15': 4094 	  ('59'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 809 PC:  60  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 1, 'r11': 137, 'r12': 72, 'r13': 60, 'r14': 137, 'r15': 4094 	  ('60'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 814 PC:  61  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 1, 'r11': 137, 'r12': 72, 'r13': 61, 'r14': 60, 'r15': 4094 	  ('61'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 819 PC:  62  MEM_OUT: 56 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 1, 'r11': 138, 'r12': 72, 'r13': 62, 'r14': 61, 'r15': 4094 	  ('62'@Opcode.JUMP:56 0)
+  DEBUG emulator:simulation TICK: 822 PC:  56  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 1, 'r11': 138, 'r12': 72, 'r13': 56, 'r14': 62, 'r15': 4094 	  ('56'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 826 PC:  57  MEM_OUT: 63 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 1, 'r11': 138, 'r12': 72, 'r13': 57, 'r14': 56, 'r15': 4094 	  ('57'@Opcode.JE:63 0)
+  DEBUG emulator:simulation TICK: 829 PC:  58  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 1, 'r11': 138, 'r12': 72, 'r13': 58, 'r14': 57, 'r15': 4094 	  ('58'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 834 PC:  59  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 2, 'r11': 138, 'r12': 72, 'r13': 59, 'r14': 58, 'r15': 4094 	  ('59'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 840 PC:  60  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 2, 'r11': 138, 'r12': 101, 'r13': 60, 'r14': 138, 'r15': 4094 	  ('60'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 845 PC:  61  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 2, 'r11': 138, 'r12': 101, 'r13': 61, 'r14': 60, 'r15': 4094 	  ('61'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 850 PC:  62  MEM_OUT: 56 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 2, 'r11': 139, 'r12': 101, 'r13': 62, 'r14': 61, 'r15': 4094 	  ('62'@Opcode.JUMP:56 0)
+  DEBUG emulator:simulation TICK: 853 PC:  56  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 2, 'r11': 139, 'r12': 101, 'r13': 56, 'r14': 62, 'r15': 4094 	  ('56'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 857 PC:  57  MEM_OUT: 63 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 2, 'r11': 139, 'r12': 101, 'r13': 57, 'r14': 56, 'r15': 4094 	  ('57'@Opcode.JE:63 0)
+  DEBUG emulator:simulation TICK: 860 PC:  58  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 2, 'r11': 139, 'r12': 101, 'r13': 58, 'r14': 57, 'r15': 4094 	  ('58'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 865 PC:  59  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 3, 'r11': 139, 'r12': 101, 'r13': 59, 'r14': 58, 'r15': 4094 	  ('59'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 871 PC:  60  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 3, 'r11': 139, 'r12': 108, 'r13': 60, 'r14': 139, 'r15': 4094 	  ('60'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 876 PC:  61  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 3, 'r11': 139, 'r12': 108, 'r13': 61, 'r14': 60, 'r15': 4094 	  ('61'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 881 PC:  62  MEM_OUT: 56 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 3, 'r11': 140, 'r12': 108, 'r13': 62, 'r14': 61, 'r15': 4094 	  ('62'@Opcode.JUMP:56 0)
+  DEBUG emulator:simulation TICK: 884 PC:  56  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 3, 'r11': 140, 'r12': 108, 'r13': 56, 'r14': 62, 'r15': 4094 	  ('56'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 888 PC:  57  MEM_OUT: 63 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 3, 'r11': 140, 'r12': 108, 'r13': 57, 'r14': 56, 'r15': 4094 	  ('57'@Opcode.JE:63 0)
+  DEBUG emulator:simulation TICK: 891 PC:  58  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 3, 'r11': 140, 'r12': 108, 'r13': 58, 'r14': 57, 'r15': 4094 	  ('58'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 896 PC:  59  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 4, 'r11': 140, 'r12': 108, 'r13': 59, 'r14': 58, 'r15': 4094 	  ('59'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 902 PC:  60  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 4, 'r11': 140, 'r12': 108, 'r13': 60, 'r14': 140, 'r15': 4094 	  ('60'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 907 PC:  61  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 4, 'r11': 140, 'r12': 108, 'r13': 61, 'r14': 60, 'r15': 4094 	  ('61'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 912 PC:  62  MEM_OUT: 56 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 4, 'r11': 141, 'r12': 108, 'r13': 62, 'r14': 61, 'r15': 4094 	  ('62'@Opcode.JUMP:56 0)
+  DEBUG emulator:simulation TICK: 915 PC:  56  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 4, 'r11': 141, 'r12': 108, 'r13': 56, 'r14': 62, 'r15': 4094 	  ('56'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 919 PC:  57  MEM_OUT: 63 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 4, 'r11': 141, 'r12': 108, 'r13': 57, 'r14': 56, 'r15': 4094 	  ('57'@Opcode.JE:63 0)
+  DEBUG emulator:simulation TICK: 922 PC:  58  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 4, 'r11': 141, 'r12': 108, 'r13': 58, 'r14': 57, 'r15': 4094 	  ('58'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 927 PC:  59  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 5, 'r11': 141, 'r12': 108, 'r13': 59, 'r14': 58, 'r15': 4094 	  ('59'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 933 PC:  60  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 5, 'r11': 141, 'r12': 111, 'r13': 60, 'r14': 141, 'r15': 4094 	  ('60'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 938 PC:  61  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 5, 'r11': 141, 'r12': 111, 'r13': 61, 'r14': 60, 'r15': 4094 	  ('61'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 943 PC:  62  MEM_OUT: 56 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 5, 'r11': 142, 'r12': 111, 'r13': 62, 'r14': 61, 'r15': 4094 	  ('62'@Opcode.JUMP:56 0)
+  DEBUG emulator:simulation TICK: 946 PC:  56  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 5, 'r11': 142, 'r12': 111, 'r13': 56, 'r14': 62, 'r15': 4094 	  ('56'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 950 PC:  57  MEM_OUT: 63 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 5, 'r11': 142, 'r12': 111, 'r13': 57, 'r14': 56, 'r15': 4094 	  ('57'@Opcode.JE:63 0)
+  DEBUG emulator:simulation TICK: 953 PC:  58  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 5, 'r11': 142, 'r12': 111, 'r13': 58, 'r14': 57, 'r15': 4094 	  ('58'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 958 PC:  59  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 6, 'r11': 142, 'r12': 111, 'r13': 59, 'r14': 58, 'r15': 4094 	  ('59'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 964 PC:  60  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 6, 'r11': 142, 'r12': 44, 'r13': 60, 'r14': 142, 'r15': 4094 	  ('60'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 969 PC:  61  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 6, 'r11': 142, 'r12': 44, 'r13': 61, 'r14': 60, 'r15': 4094 	  ('61'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 974 PC:  62  MEM_OUT: 56 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 6, 'r11': 143, 'r12': 44, 'r13': 62, 'r14': 61, 'r15': 4094 	  ('62'@Opcode.JUMP:56 0)
+  DEBUG emulator:simulation TICK: 977 PC:  56  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 6, 'r11': 143, 'r12': 44, 'r13': 56, 'r14': 62, 'r15': 4094 	  ('56'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 981 PC:  57  MEM_OUT: 63 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 6, 'r11': 143, 'r12': 44, 'r13': 57, 'r14': 56, 'r15': 4094 	  ('57'@Opcode.JE:63 0)
+  DEBUG emulator:simulation TICK: 984 PC:  58  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 6, 'r11': 143, 'r12': 44, 'r13': 58, 'r14': 57, 'r15': 4094 	  ('58'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 989 PC:  59  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 7, 'r11': 143, 'r12': 44, 'r13': 59, 'r14': 58, 'r15': 4094 	  ('59'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 995 PC:  60  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 7, 'r11': 143, 'r12': 32, 'r13': 60, 'r14': 143, 'r15': 4094 	  ('60'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 1000 PC:  61  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 7, 'r11': 143, 'r12': 32, 'r13': 61, 'r14': 60, 'r15': 4094 	  ('61'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 1005 PC:  62  MEM_OUT: 56 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 7, 'r11': 144, 'r12': 32, 'r13': 62, 'r14': 61, 'r15': 4094 	  ('62'@Opcode.JUMP:56 0)
+  DEBUG emulator:simulation TICK: 1008 PC:  56  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 7, 'r11': 144, 'r12': 32, 'r13': 56, 'r14': 62, 'r15': 4094 	  ('56'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 1012 PC:  57  MEM_OUT: 63 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 7, 'r11': 144, 'r12': 32, 'r13': 57, 'r14': 56, 'r15': 4094 	  ('57'@Opcode.JE:63 0)
+  DEBUG emulator:simulation TICK: 1015 PC:  63  MEM_OUT: r9 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 7, 'r10': 7, 'r11': 144, 'r12': 32, 'r13': 63, 'r14': 57, 'r15': 4094 	  ('63'@Opcode.LD_STACK:Register.r9 0)
+  DEBUG emulator:simulation TICK: 1021 PC:  64  MEM_OUT: r9 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 120, 'r10': 7, 'r11': 144, 'r12': 32, 'r13': 64, 'r14': 4095, 'r15': 4094 	  ('64'@Opcode.MV:Register.r9 Register.r11)
+  DEBUG emulator:simulation TICK: 1026 PC:  65  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 120, 'r10': 7, 'r11': 120, 'r12': 32, 'r13': 65, 'r14': 64, 'r15': 4094 	  ('65'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 1031 PC:  66  MEM_OUT: r9 r9 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 120, 'r10': 7, 'r11': 121, 'r12': 32, 'r13': 66, 'r14': 65, 'r15': 4094 	  ('66'@Opcode.LD:Register.r9 Register.r9)
+  DEBUG emulator:simulation TICK: 1037 PC:  67  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 7, 'r11': 121, 'r12': 32, 'r13': 67, 'r14': 120, 'r15': 4094 	  ('67'@Opcode.LD_LIT:Register.r10 0)
+  DEBUG emulator:simulation TICK: 1041 PC:  68  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 0, 'r11': 121, 'r12': 32, 'r13': 68, 'r14': 67, 'r15': 4094 	  ('68'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 1045 PC:  69  MEM_OUT: 75 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 0, 'r11': 121, 'r12': 32, 'r13': 69, 'r14': 68, 'r15': 4094 	  ('69'@Opcode.JE:75 0)
+  DEBUG emulator:simulation TICK: 1048 PC:  70  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 0, 'r11': 121, 'r12': 32, 'r13': 70, 'r14': 69, 'r15': 4094 	  ('70'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 1053 PC:  71  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 1, 'r11': 121, 'r12': 32, 'r13': 71, 'r14': 70, 'r15': 4094 	  ('71'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 1059 PC:  72  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 1, 'r11': 121, 'r12': 66, 'r13': 72, 'r14': 121, 'r15': 4094 	  ('72'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 1064 PC:  73  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 1, 'r11': 121, 'r12': 66, 'r13': 73, 'r14': 72, 'r15': 4094 	  ('73'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 1069 PC:  74  MEM_OUT: 68 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 1, 'r11': 122, 'r12': 66, 'r13': 74, 'r14': 73, 'r15': 4094 	  ('74'@Opcode.JUMP:68 0)
+  DEBUG emulator:simulation TICK: 1072 PC:  68  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 1, 'r11': 122, 'r12': 66, 'r13': 68, 'r14': 74, 'r15': 4094 	  ('68'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 1076 PC:  69  MEM_OUT: 75 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 1, 'r11': 122, 'r12': 66, 'r13': 69, 'r14': 68, 'r15': 4094 	  ('69'@Opcode.JE:75 0)
+  DEBUG emulator:simulation TICK: 1079 PC:  70  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 1, 'r11': 122, 'r12': 66, 'r13': 70, 'r14': 69, 'r15': 4094 	  ('70'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 1084 PC:  71  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 2, 'r11': 122, 'r12': 66, 'r13': 71, 'r14': 70, 'r15': 4094 	  ('71'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 1090 PC:  72  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 2, 'r11': 122, 'r12': 111, 'r13': 72, 'r14': 122, 'r15': 4094 	  ('72'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 1095 PC:  73  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 2, 'r11': 122, 'r12': 111, 'r13': 73, 'r14': 72, 'r15': 4094 	  ('73'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 1100 PC:  74  MEM_OUT: 68 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 2, 'r11': 123, 'r12': 111, 'r13': 74, 'r14': 73, 'r15': 4094 	  ('74'@Opcode.JUMP:68 0)
+  DEBUG emulator:simulation TICK: 1103 PC:  68  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 2, 'r11': 123, 'r12': 111, 'r13': 68, 'r14': 74, 'r15': 4094 	  ('68'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 1107 PC:  69  MEM_OUT: 75 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 2, 'r11': 123, 'r12': 111, 'r13': 69, 'r14': 68, 'r15': 4094 	  ('69'@Opcode.JE:75 0)
+  DEBUG emulator:simulation TICK: 1110 PC:  70  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 2, 'r11': 123, 'r12': 111, 'r13': 70, 'r14': 69, 'r15': 4094 	  ('70'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 1115 PC:  71  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 3, 'r11': 123, 'r12': 111, 'r13': 71, 'r14': 70, 'r15': 4094 	  ('71'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 1121 PC:  72  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 3, 'r11': 123, 'r12': 98, 'r13': 72, 'r14': 123, 'r15': 4094 	  ('72'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 1126 PC:  73  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 3, 'r11': 123, 'r12': 98, 'r13': 73, 'r14': 72, 'r15': 4094 	  ('73'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 1131 PC:  74  MEM_OUT: 68 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 3, 'r11': 124, 'r12': 98, 'r13': 74, 'r14': 73, 'r15': 4094 	  ('74'@Opcode.JUMP:68 0)
+  DEBUG emulator:simulation TICK: 1134 PC:  68  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 3, 'r11': 124, 'r12': 98, 'r13': 68, 'r14': 74, 'r15': 4094 	  ('68'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 1138 PC:  69  MEM_OUT: 75 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 3, 'r11': 124, 'r12': 98, 'r13': 69, 'r14': 68, 'r15': 4094 	  ('69'@Opcode.JE:75 0)
+  DEBUG emulator:simulation TICK: 1141 PC:  75  MEM_OUT: r9 144 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 3, 'r10': 3, 'r11': 124, 'r12': 98, 'r13': 75, 'r14': 69, 'r15': 4094 	  ('75'@Opcode.LD_LIT:Register.r9 144)
+  DEBUG emulator:simulation TICK: 1145 PC:  76  MEM_OUT: r9 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 144, 'r10': 3, 'r11': 124, 'r12': 98, 'r13': 76, 'r14': 75, 'r15': 4094 	  ('76'@Opcode.MV:Register.r9 Register.r11)
+  DEBUG emulator:simulation TICK: 1150 PC:  77  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 144, 'r10': 3, 'r11': 144, 'r12': 98, 'r13': 77, 'r14': 76, 'r15': 4094 	  ('77'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 1155 PC:  78  MEM_OUT: r9 r9 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 144, 'r10': 3, 'r11': 145, 'r12': 98, 'r13': 78, 'r14': 77, 'r15': 4094 	  ('78'@Opcode.LD:Register.r9 Register.r9)
+  DEBUG emulator:simulation TICK: 1161 PC:  79  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 3, 'r11': 145, 'r12': 98, 'r13': 79, 'r14': 144, 'r15': 4094 	  ('79'@Opcode.LD_LIT:Register.r10 0)
+  DEBUG emulator:simulation TICK: 1165 PC:  80  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 0, 'r11': 145, 'r12': 98, 'r13': 80, 'r14': 79, 'r15': 4094 	  ('80'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 1169 PC:  81  MEM_OUT: 87 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 0, 'r11': 145, 'r12': 98, 'r13': 81, 'r14': 80, 'r15': 4094 	  ('81'@Opcode.JE:87 0)
+  DEBUG emulator:simulation TICK: 1172 PC:  82  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 0, 'r11': 145, 'r12': 98, 'r13': 82, 'r14': 81, 'r15': 4094 	  ('82'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 1177 PC:  83  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 1, 'r11': 145, 'r12': 98, 'r13': 83, 'r14': 82, 'r15': 4094 	  ('83'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 1183 PC:  84  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 1, 'r11': 145, 'r12': 33, 'r13': 84, 'r14': 145, 'r15': 4094 	  ('84'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 1188 PC:  85  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 1, 'r11': 145, 'r12': 33, 'r13': 85, 'r14': 84, 'r15': 4094 	  ('85'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 1193 PC:  86  MEM_OUT: 80 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 1, 'r11': 146, 'r12': 33, 'r13': 86, 'r14': 85, 'r15': 4094 	  ('86'@Opcode.JUMP:80 0)
+  DEBUG emulator:simulation TICK: 1196 PC:  80  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 1, 'r11': 146, 'r12': 33, 'r13': 80, 'r14': 86, 'r15': 4094 	  ('80'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 1200 PC:  81  MEM_OUT: 87 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 1, 'r11': 146, 'r12': 33, 'r13': 81, 'r14': 80, 'r15': 4094 	  ('81'@Opcode.JE:87 0)
+  DEBUG emulator:simulation TICK: 1203 PC:  87  MEM_OUT: 0 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 120, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 1, 'r10': 1, 'r11': 146, 'r12': 33, 'r13': 87, 'r14': 81, 'r15': 4094 	  ('87'@Opcode.HALT:0 0)
+  INFO emulator:simulation output_buffer: 'Who are you?\nBob\nHello, Bob!'
+out_stdout: |
+  ============================================================
+  Who are you?
+  Bob
+  Hello, Bob!
+  instr_counter:  270 ticks: 1205
+out_code: |-
+  [{"index": 0, "opcode": "LD_LIT", "arg1": "r9", "arg2": 120},
+   {"index": 1, "opcode": "MV", "arg1": "r9", "arg2": "r11"},
+   {"index": 2, "opcode": "INC", "arg1": "r11", "arg2": 0},
+   {"index": 3, "opcode": "LD", "arg1": "r9", "arg2": "r9"},
+   {"index": 4, "opcode": "LD_LIT", "arg1": "r10", "arg2": 0},
+   {"index": 5, "opcode": "CMP", "arg1": "r9", "arg2": "r10"},
+   {"index": 6, "opcode": "JE", "arg1": 12, "arg2": 0},
+   {"index": 7, "opcode": "INC", "arg1": "r10", "arg2": 0},
+   {"index": 8, "opcode": "LD", "arg1": "r12", "arg2": "r11"},
+   {"index": 9, "opcode": "PRINT", "arg1": "r12", "arg2": 0},
+   {"index": 10, "opcode": "INC", "arg1": "r11", "arg2": 0},
+   {"index": 11, "opcode": "JUMP", "arg1": 5, "arg2": 0},
+   {"index": 12, "opcode": "LD_LIT", "arg1": "r3", "arg2": 0},
+   {"index": 13, "opcode": "PUSH", "arg1": "r3", "arg2": 0},
+   {"index": 14, "opcode": "LD_LIT", "arg1": "r9", "arg2": 0},
+   {"index": 15, "opcode": "LD_LIT", "arg1": "r11", "arg2": 0},
+   {"index": 16, "opcode": "LD_LIT", "arg1": "r12", "arg2": 120},
+   {"index": 17, "opcode": "READ", "arg1": "r9", "arg2": 0},
+   {"index": 18, "opcode": "CMP", "arg1": "r9", "arg2": "r0"},
+   {"index": 19, "opcode": "JE", "arg1": 24, "arg2": 0},
+   {"index": 20, "opcode": "INC", "arg1": "r11", "arg2": 0},
+   {"index": 21, "opcode": "INC", "arg1": "r12", "arg2": 0},
+   {"index": 22, "opcode": "ST", "arg1": "r9", "arg2": "r12"},
+   {"index": 23, "opcode": "JUMP", "arg1": 17, "arg2": 0},
+   {"index": 24, "opcode": "ST_ADDR", "arg1": "r11", "arg2": 120},
+   {"index": 25, "opcode": "LD_LIT", "arg1": "r4", "arg2": 120},
+   {"index": 26, "opcode": "ST_STACK", "arg1": "r4", "arg2": 0},
+   {"index": 27, "opcode": "LD_STACK", "arg1": "r9", "arg2": 0},
+   {"index": 28, "opcode": "MV", "arg1": "r9", "arg2": "r11"},
+   {"index": 29, "opcode": "INC", "arg1": "r11", "arg2": 0},
+   {"index": 30, "opcode": "LD", "arg1": "r9", "arg2": "r9"},
+   {"index": 31, "opcode": "LD_LIT", "arg1": "r10", "arg2": 0},
+   {"index": 32, "opcode": "CMP", "arg1": "r9", "arg2": "r10"},
+   {"index": 33, "opcode": "JE", "arg1": 39, "arg2": 0},
+   {"index": 34, "opcode": "INC", "arg1": "r10", "arg2": 0},
+   {"index": 35, "opcode": "LD", "arg1": "r12", "arg2": "r11"},
+   {"index": 36, "opcode": "PRINT", "arg1": "r12", "arg2": 0},
+   {"index": 37, "opcode": "INC", "arg1": "r11", "arg2": 0},
+   {"index": 38, "opcode": "JUMP", "arg1": 32, "arg2": 0},
+   {"index": 39, "opcode": "LD_LIT", "arg1": "r9", "arg2": 134},
+   {"index": 40, "opcode": "MV", "arg1": "r9", "arg2": "r11"},
+   {"index": 41, "opcode": "INC", "arg1": "r11", "arg2": 0},
+   {"index": 42, "opcode": "LD", "arg1": "r9", "arg2": "r9"},
+   {"index": 43, "opcode": "LD_LIT", "arg1": "r10", "arg2": 0},
+   {"index": 44, "opcode": "CMP", "arg1": "r9", "arg2": "r10"},
+   {"index": 45, "opcode": "JE", "arg1": 51, "arg2": 0},
+   {"index": 46, "opcode": "INC", "arg1": "r10", "arg2": 0},
+   {"index": 47, "opcode": "LD", "arg1": "r12", "arg2": "r11"},
+   {"index": 48, "opcode": "PRINT", "arg1": "r12", "arg2": 0},
+   {"index": 49, "opcode": "INC", "arg1": "r11", "arg2": 0},
+   {"index": 50, "opcode": "JUMP", "arg1": 44, "arg2": 0},
+   {"index": 51, "opcode": "LD_LIT", "arg1": "r9", "arg2": 136},
+   {"index": 52, "opcode": "MV", "arg1": "r9", "arg2": "r11"},
+   {"index": 53, "opcode": "INC", "arg1": "r11", "arg2": 0},
+   {"index": 54, "opcode": "LD", "arg1": "r9", "arg2": "r9"},
+   {"index": 55, "opcode": "LD_LIT", "arg1": "r10", "arg2": 0},
+   {"index": 56, "opcode": "CMP", "arg1": "r9", "arg2": "r10"},
+   {"index": 57, "opcode": "JE", "arg1": 63, "arg2": 0},
+   {"index": 58, "opcode": "INC", "arg1": "r10", "arg2": 0},
+   {"index": 59, "opcode": "LD", "arg1": "r12", "arg2": "r11"},
+   {"index": 60, "opcode": "PRINT", "arg1": "r12", "arg2": 0},
+   {"index": 61, "opcode": "INC", "arg1": "r11", "arg2": 0},
+   {"index": 62, "opcode": "JUMP", "arg1": 56, "arg2": 0},
+   {"index": 63, "opcode": "LD_STACK", "arg1": "r9", "arg2": 0},
+   {"index": 64, "opcode": "MV", "arg1": "r9", "arg2": "r11"},
+   {"index": 65, "opcode": "INC", "arg1": "r11", "arg2": 0},
+   {"index": 66, "opcode": "LD", "arg1": "r9", "arg2": "r9"},
+   {"index": 67, "opcode": "LD_LIT", "arg1": "r10", "arg2": 0},
+   {"index": 68, "opcode": "CMP", "arg1": "r9", "arg2": "r10"},
+   {"index": 69, "opcode": "JE", "arg1": 75, "arg2": 0},
+   {"index": 70, "opcode": "INC", "arg1": "r10", "arg2": 0},
+   {"index": 71, "opcode": "LD", "arg1": "r12", "arg2": "r11"},
+   {"index": 72, "opcode": "PRINT", "arg1": "r12", "arg2": 0},
+   {"index": 73, "opcode": "INC", "arg1": "r11", "arg2": 0},
+   {"index": 74, "opcode": "JUMP", "arg1": 68, "arg2": 0},
+   {"index": 75, "opcode": "LD_LIT", "arg1": "r9", "arg2": 144},
+   {"index": 76, "opcode": "MV", "arg1": "r9", "arg2": "r11"},
+   {"index": 77, "opcode": "INC", "arg1": "r11", "arg2": 0},
+   {"index": 78, "opcode": "LD", "arg1": "r9", "arg2": "r9"},
+   {"index": 79, "opcode": "LD_LIT", "arg1": "r10", "arg2": 0},
+   {"index": 80, "opcode": "CMP", "arg1": "r9", "arg2": "r10"},
+   {"index": 81, "opcode": "JE", "arg1": 87, "arg2": 0},
+   {"index": 82, "opcode": "INC", "arg1": "r10", "arg2": 0},
+   {"index": 83, "opcode": "LD", "arg1": "r12", "arg2": "r11"},
+   {"index": 84, "opcode": "PRINT", "arg1": "r12", "arg2": 0},
+   {"index": 85, "opcode": "INC", "arg1": "r11", "arg2": 0},
+   {"index": 86, "opcode": "JUMP", "arg1": 80, "arg2": 0},
+   {"index": 87, "opcode": "HALT", "arg1": 0, "arg2": 0},
+   {"index": 88, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 89, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 90, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 91, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 92, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 93, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 94, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 95, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 96, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 97, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 98, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 99, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 100, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 101, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 102, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 103, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 104, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 105, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 106, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 107, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 108, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 109, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 110, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 111, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 112, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 113, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 114, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 115, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 116, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 117, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 118, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 119, "opcode": "JUMP", "arg1": 0, "arg2": 0},
+   {"index": 120, "opcode": "JUMP", "arg1": 13, "arg2": 0},
+   {"index": 121, "opcode": "JUMP", "arg1": 87, "arg2": 0},
+   {"index": 122, "opcode": "JUMP", "arg1": 104, "arg2": 0},
+   {"index": 123, "opcode": "JUMP", "arg1": 111, "arg2": 0},
+   {"index": 124, "opcode": "JUMP", "arg1": 32, "arg2": 0},
+   {"index": 125, "opcode": "JUMP", "arg1": 97, "arg2": 0},
+   {"index": 126, "opcode": "JUMP", "arg1": 114, "arg2": 0},
+   {"index": 127, "opcode": "JUMP", "arg1": 101, "arg2": 0},
+   {"index": 128, "opcode": "JUMP", "arg1": 32, "arg2": 0},
+   {"index": 129, "opcode": "JUMP", "arg1": 121, "arg2": 0},
+   {"index": 130, "opcode": "JUMP", "arg1": 111, "arg2": 0},
+   {"index": 131, "opcode": "JUMP", "arg1": 117, "arg2": 0},
+   {"index": 132, "opcode": "JUMP", "arg1": 63, "arg2": 0},
+   {"index": 133, "opcode": "JUMP", "arg1": 10, "arg2": 0},
+   {"index": 134, "opcode": "JUMP", "arg1": 1, "arg2": 0},
+   {"index": 135, "opcode": "JUMP", "arg1": 10, "arg2": 0},
+   {"index": 136, "opcode": "JUMP", "arg1": 7, "arg2": 0},
+   {"index": 137, "opcode": "JUMP", "arg1": 72, "arg2": 0},
+   {"index": 138, "opcode": "JUMP", "arg1": 101, "arg2": 0},
+   {"index": 139, "opcode": "JUMP", "arg1": 108, "arg2": 0},
+   {"index": 140, "opcode": "JUMP", "arg1": 108, "arg2": 0},
+   {"index": 141, "opcode": "JUMP", "arg1": 111, "arg2": 0},
+   {"index": 142, "opcode": "JUMP", "arg1": 44, "arg2": 0},
+   {"index": 143, "opcode": "JUMP", "arg1": 32, "arg2": 0},
+   {"index": 144, "opcode": "JUMP", "arg1": 1, "arg2": 0},
+   {"index": 145, "opcode": "JUMP", "arg1": 33, "arg2": 0}]
