@@ -408,10 +408,6 @@ def simulation(mem: list[Word], input_tokens: list[str], limit: int):
     return "".join(data_path.output_ports[0]), instr_counter, control_unit.current_tick()
 
 
-print("".join(output))
-print("instr_counter: ", instr_counter, "ticks:", ticks)
-
-
 def main(code_file, input_file):
     code: list[Word] = read_code(code_file)
     with open(input_file, encoding="utf-8") as file:
