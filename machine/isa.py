@@ -31,7 +31,6 @@ class Opcode(Enum):
     ADD = 'ADD'
     ADD_LIT = 'ADD_LIT'
     SUB = 'SUB'
-    MUL = 'MUL'
     NEG = 'NEG'
     SHL = 'SHL'
     SHR = 'SHR'

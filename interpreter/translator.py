@@ -12,7 +12,6 @@ ast_type2opcode = {
     AstType.NEQ: Opcode.JNE,
     AstType.PLUS: Opcode.ADD,
     AstType.MINUS: Opcode.SUB,
-    AstType.MUL: Opcode.MUL,
     AstType.XOR: Opcode.XOR,
     AstType.OR: Opcode.OR,
     AstType.AND: Opcode.AND,
@@ -180,10 +179,45 @@ def ast_to_machine_code_math_rec(node: AstNode, program: Program, is_left: bool 
         ast_to_machine_code_div(node, program)
     elif node.astType is AstType.MOD:
         ast_to_machine_code_mod(node, program)
+    elif node.astType is AstType.MUL:
+        ast_to_machine_code_mul(program)
     else:
         program.add_instruction(ast_type2opcode[node.astType], Register.r9, Register.r10)
     program.add_instruction(Opcode.PUSH, Register.r9)
     return False
+
+
+def ast_to_machine_code_mul(program):
+    program.add_instruction(Opcode.PUSH, Register.r3)  # to store 1 to check last bit
+    program.add_instruction(Opcode.PUSH, Register.r4)  # to store the result of multiplication by the power of 2
+    program.add_instruction(Opcode.PUSH, Register.r5)  # counter
+    program.add_instruction(Opcode.PUSH, Register.r11)  # res
+    program.add_instruction(Opcode.PUSH, Register.r12)  # to check the last bit value
+    program.add_instruction(Opcode.LD_LIT, Register.r11, 0)
+    program.add_instruction(Opcode.LD_LIT, Register.r5, 0)
+    program.add_instruction(Opcode.LD_LIT, Register.r3, 1)
+
+    loop_start = program.add_instruction(Opcode.CMP, Register.r10, Register.r0)
+    loop_jump = program.add_instruction(Opcode.JE, 0)
+    program.add_instruction(Opcode.MV, Register.r10, Register.r12)
+    program.add_instruction(Opcode.ADD, Register.r12, Register.r3)
+    program.add_instruction(Opcode.CMP, Register.r12, Register.r0)
+    if_statement = program.add_instruction(Opcode.JE, 0)
+    program.add_instruction(Opcode.MV, Register.r9, Register.r4)
+    program.add_instruction(Opcode.SHL, Register.r4, Register.r5)
+    program.add_instruction(Opcode.ADD, Register.r11, Register.r4)
+    program.add_instruction(Opcode.INC, Register.r5)
+    after_if = program.add_instruction(Opcode.SHR, Register.r10, Register.r3)
+    program.machine_code[if_statement].arg1 = after_if
+    program.add_instruction(Opcode.JUMP, loop_start)
+
+    after_loop = program.add_instruction(Opcode.MV, Register.r11, Register.r9)
+    program.machine_code[loop_jump].arg1 = after_loop
+    program.add_instruction(Opcode.POP, Register.r12)
+    program.add_instruction(Opcode.POP, Register.r11)
+    program.add_instruction(Opcode.POP, Register.r5)
+    program.add_instruction(Opcode.POP, Register.r4)
+    program.add_instruction(Opcode.POP, Register.r3)
 
 
 def ast_to_machine_code_div(node: AstNode, program: Program) -> int:

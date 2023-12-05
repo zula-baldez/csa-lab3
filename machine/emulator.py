@@ -8,7 +8,6 @@ from machine.isa import Opcode, Word, read_code, Register, sp, pc, dr
 class Alu:
     neg: bool = False
     zero: bool = False
-    carry: bool = False
 
     def __init__(self):
         self.acc = 0
@@ -17,12 +16,9 @@ class Alu:
     max_value = 2 ** 32 - 1
 
     def set_flags(self, value: int):
-        self.carry = False
         if value > self.max_value:
-            self.carry = True
             value = value & self.min_value
         if value < self.min_value:
-            self.carry = True
             value = value & self.min_value
         self.neg = value < 0
         self.zero = value == 0
@@ -31,10 +27,6 @@ class Alu:
         res: int
         if opcode is Opcode.ADD or opcode is Opcode.ADD_LIT:
             res = arg1 + arg2
-        elif opcode is Opcode.SUB:
-            res = arg1 - arg2
-        elif opcode is Opcode.MUL:
-            res = arg1 * arg2
         elif opcode is Opcode.INC:
             res = arg1 + 1
         elif opcode is Opcode.DEC:
@@ -51,6 +43,7 @@ class Alu:
             res = arg1 | arg2
         elif opcode is Opcode.NEG:
             res = ~arg1
+
         else:
             raise ValueError("unknown opcode: {}".format(opcode))
         self.set_flags(res)
@@ -125,10 +118,6 @@ class DataPath:
 
 
 class ControlUnit:
-    class Stage(Enum):
-        FETCH = 0
-        DECODE = 1
-        EXECUTE = 2
 
     data_path: DataPath = None
 
@@ -184,15 +173,14 @@ class ControlUnit:
         self.data_path.latch_reg(dr, addr)
         self.tick()
         instr: Word = self.data_path.memory[self.data_path.registers[dr]]
-        self.tick()
         return instr
 
     def ld_addr(self, instr: Word):
         addr: int = instr.arg2
         reg: Register = instr.arg1
         self.data_path.latch_reg(dr, addr)
-        data: Word = self.data_path.memory_perform(True, False)
         self.tick()
+        data: Word = self.data_path.memory_perform(True, False)
         self.data_path.latch_reg(reg, data.arg1)
         self.tick()
 
@@ -207,7 +195,6 @@ class ControlUnit:
         reg_to: Register = instr.arg1
         reg_from: Register = instr.arg2
         reg_data: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[reg_from])
-        self.tick()
         self.data_path.latch_reg(dr, reg_data)
         self.tick()
         data: Word = self.data_path.memory_perform(True, False)
@@ -217,7 +204,6 @@ class ControlUnit:
     def ld_stack(self, instr: Word):
         reg_to: Register = instr.arg1
         addr: int = self.data_path.mem_size - instr.arg2 - 1
-        self.tick()
         self.data_path.latch_reg(dr, addr)
         self.tick()
         data: Word = self.data_path.memory_perform(True, False)
@@ -230,25 +216,21 @@ class ControlUnit:
         self.tick()
         reg: Register = instr.arg1
         reg_data: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[reg])
-        self.tick()
         self.data_path.memory_perform(False, True, reg_data)
         self.tick()
 
     def st(self, instr: Word):
         addr_reg: Register = instr.arg2
         addr: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[addr_reg])
-        self.tick()
         self.data_path.latch_reg(dr, addr)
         self.tick()
         data_reg: Register = instr.arg1
         data: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[data_reg])
-        self.tick()
         self.data_path.memory_perform(False, True, data)
         self.tick()
 
     def st_stack(self, instr: Word):
         addr_to: int = self.data_path.mem_size - instr.arg2 - 1
-        self.tick()
         self.data_path.latch_reg(dr, addr_to)
         self.tick()
         reg_from: Register = instr.arg1
@@ -275,53 +257,60 @@ class ControlUnit:
         reg: Register = instr.arg1
         data: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[reg])
         port: int = instr.arg2
-        self.tick()
         self.data_path.put_char(data, port)
         self.tick()
 
     def arythm(self, instr: Word):
         res: int = self.data_path.perform_arithmetic(instr.opcode, self.data_path.load_reg(instr.arg1),
                                                      self.data_path.load_reg(instr.arg2))
-        self.tick()
         self.data_path.latch_reg(instr.arg1, res)
         self.tick()
 
     def add_lit(self, instr: Word):
         res: int = self.data_path.perform_arithmetic(instr.opcode, self.data_path.load_reg(instr.arg1), instr.arg2)
-        self.tick()
         self.data_path.latch_reg(instr.arg1, res)
         self.tick()
 
     def push(self, instr: Word):
         addr_reg: Register = sp
         addr: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[addr_reg])
-        self.tick()
         self.data_path.latch_reg(dr, addr)
         self.tick()
         data_reg: Register = instr.arg1
         data: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[data_reg])
-        self.tick()
         self.data_path.memory_perform(False, True, data)
         self.tick()
         res: int = self.data_path.perform_arithmetic(Opcode.DEC, self.data_path.load_reg(sp))
-        self.tick()
         self.data_path.latch_reg(sp, res)
         self.tick()
 
     def pop(self, instr: Word):
         res: int = self.data_path.perform_arithmetic(Opcode.INC, self.data_path.load_reg(sp))
-        self.tick()
         self.data_path.latch_reg(sp, res)
         self.tick()
         addr: int = self.data_path.perform_arithmetic(Opcode.ADD, self.data_path.registers[sp], 0)
-        self.tick()
         self.data_path.latch_reg(dr, addr)
         self.tick()
         data: Word = self.data_path.memory_perform(True, False)
-        self.tick()
         self.data_path.latch_reg(instr.arg1, data.arg1)
         self.tick()
 
+    def cmp(self, instr: Word):
+        inv = self.data_path.perform_arithmetic(Opcode.NEG, self.data_path.load_reg(instr.arg2))
+        self.tick()
+        inv = self.data_path.perform_arithmetic(Opcode.INC, inv)
+        self.tick()
+        self.data_path.perform_arithmetic(Opcode.ADD, self.data_path.load_reg(instr.arg1), inv)
+        self.tick()
+
+    def sub(self, instr: Word):
+        inv = self.data_path.perform_arithmetic(Opcode.NEG, self.data_path.load_reg(instr.arg2))
+        self.tick()
+        inv = self.data_path.perform_arithmetic(Opcode.INC, inv)
+        self.tick()
+        res = self.data_path.perform_arithmetic(Opcode.ADD, self.data_path.load_reg(instr.arg1), inv)
+        self.data_path.latch_reg(instr.arg1, res)
+        self.tick()
 
     def decode_and_execute_instruction(self):
         instr: Word = self.fetch_instruction()
@@ -349,7 +338,7 @@ class ControlUnit:
             self.read(instr)
         if opcode is Opcode.PRINT:
             self.print(instr)
-        if opcode in {Opcode.ADD, Opcode.MUL, Opcode.OR, Opcode.AND, Opcode.SHL, Opcode.SHR, Opcode.XOR, Opcode.SUB}:
+        if opcode in {Opcode.ADD, Opcode.OR, Opcode.AND, Opcode.SHL, Opcode.SHR, Opcode.XOR}:
             self.arythm(instr)
         if opcode in {Opcode.INC, Opcode.DEC}:
             res: int = self.data_path.perform_arithmetic(opcode, self.data_path.load_reg(instr.arg1))
@@ -360,10 +349,9 @@ class ControlUnit:
         if opcode is Opcode.ADD_LIT:
             self.add_lit(instr)
         if opcode is Opcode.CMP:
-            res: int = self.data_path.perform_arithmetic(Opcode.SUB,
-                                                         self.data_path.load_reg(instr.arg1),
-                                                         self.data_path.load_reg(instr.arg2))
-            self.tick()
+            self.cmp(instr)
+        if opcode is Opcode.SUB:
+            self.sub(instr)
         if opcode is Opcode.PUSH:
             self.push(instr)
         if opcode is Opcode.POP:
@@ -418,6 +406,10 @@ def simulation(mem: list[Word], input_tokens: list[str], limit: int):
         logging.warning("Limit exceeded!")
     logging.info("output_buffer: %s", repr("".join(data_path.output_ports[0])))
     return "".join(data_path.output_ports[0]), instr_counter, control_unit.current_tick()
+
+
+print("".join(output))
+print("instr_counter: ", instr_counter, "ticks:", ticks)
 
 
 def main(code_file, input_file):
