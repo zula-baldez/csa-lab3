@@ -216,8 +216,8 @@ next_symbol - ввести с устройства
 2. [cat](golden/cat.yml) -- программа `cat`, повторяем ввод на выводе.
 3. [hello user](golden/hello_user.yml). - приветствие пользователя
 4. [math](golden/math.yml). - тест корректности реализации математических выражений
-5. [math](golden/prob5.yml). - prob5 из задания
-6. [math](golden/prob5_optimized.yml). - оптимизированный prob5 без использования деления по модулю
+5. [prob5](golden/prob5.yml). - prob5 из задания
+6. [prob5_optimized](golden/prob5_optimized.yml). - оптимизированный prob5 без использования деления по модулю
 
 Рассмотрим алгоритм Hello World. Исходный код выглядит следующим образом
 ```
