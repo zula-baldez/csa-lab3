@@ -2,9 +2,8 @@ from __future__ import annotations
 
 import sys
 
-from machine.isa import Opcode, Register, StaticMemAddressStub, Word, write_code
-
 from interpreter.parser import AstNode, AstType, parse
+from machine.isa import Opcode, Register, StaticMemAddressStub, Word, write_code
 
 
 class WrongTokenTypeError(Exception):
@@ -52,8 +51,12 @@ class Program:
         self.prog_size = 4096
         self.input_buffer_size = 32
 
-    def add_instruction(self, opcode: Opcode, arg1: int | Register | StaticMemAddressStub = 0,
-                        arg2: int | Register | StaticMemAddressStub = 0) -> int:
+    def add_instruction(
+        self,
+        opcode: Opcode,
+        arg1: int | Register | StaticMemAddressStub = 0,
+        arg2: int | Register | StaticMemAddressStub = 0,
+    ) -> int:
         self.machine_code.append(Word(self.current_command_address, opcode, arg1, arg2))
         self.current_command_address += 1
         return self.current_command_address - 1
@@ -201,7 +204,6 @@ def perform_userspace_math(node: AstNode, program: Program) -> bool:
         ast_to_machine_code_mul(program)
         return True
     return False
-
 
 
 def ast_to_machine_code_mul(program: Program):

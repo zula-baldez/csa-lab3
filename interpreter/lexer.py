@@ -52,4 +52,3 @@ def lex(program: str) -> list[tuple[Token, str]]:
         else:
             tokens.append((Token[t_type], t_value))
     return tokens
-

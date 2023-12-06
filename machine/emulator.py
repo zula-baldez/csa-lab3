@@ -14,8 +14,8 @@ class Alu:
     def __init__(self):
         self.acc = 0
 
-    min_value = - 2 ** 32
-    max_value = 2 ** 32 - 1
+    min_value = -(2**32)
+    max_value = 2**32 - 1
 
     def set_flags(self, value: int):
         if value > self.max_value:
@@ -49,7 +49,6 @@ class Alu:
 
 
 class DataPath:
-
     registers: dict[Register, int]
 
     mem_size: int
@@ -136,8 +135,14 @@ class ControlUnit:
 
         jmp_flag: bool = False
 
-        if (opcode is Opcode.JE or opcode is Opcode.JNE or opcode is Opcode.JL or opcode is Opcode.JLE or
-                opcode is Opcode.JG or opcode is Opcode.JGE):
+        if (
+            opcode is Opcode.JE
+            or opcode is Opcode.JNE
+            or opcode is Opcode.JL
+            or opcode is Opcode.JLE
+            or opcode is Opcode.JG
+            or opcode is Opcode.JGE
+        ):
             match opcode:
                 case Opcode.JE:
                     jmp_flag = self.data_path.zero() == 1
@@ -251,8 +256,9 @@ class ControlUnit:
         self.tick()
 
     def arythm(self, instr: Word):
-        res: int = self.data_path.perform_arithmetic(instr.opcode, self.data_path.load_reg(instr.arg1),
-                                                     self.data_path.load_reg(instr.arg2))
+        res: int = self.data_path.perform_arithmetic(
+            instr.opcode, self.data_path.load_reg(instr.arg1), self.data_path.load_reg(instr.arg2)
+        )
         self.data_path.latch_reg(instr.arg1, res)
         self.tick()
 
@@ -334,7 +340,7 @@ class ControlUnit:
             Opcode.SUB: self.sub,
             Opcode.PUSH: self.push,
             Opcode.POP: self.pop,
-            Opcode.NEG: self.unary_arythm
+            Opcode.NEG: self.unary_arythm,
         }
         if self.decode_and_execute_control_flow_instruction(instr, opcode):
             return

@@ -100,14 +100,12 @@ def write_code(filename: str, code: list[Word]) -> None:
     with open(filename, "w", encoding="utf-8") as file:
         buf = []
         for instr in code:
-            buf.append(json.dumps({
-                "index": instr.index,
-                "opcode": instr.opcode.value,
-                "arg1": instr.arg1,
-                "arg2": instr.arg2
-            },
-                cls=EnumEncoder
-            ))
+            buf.append(
+                json.dumps(
+                    {"index": instr.index, "opcode": instr.opcode.value, "arg1": instr.arg1, "arg2": instr.arg2},
+                    cls=EnumEncoder,
+                )
+            )
         file.write("[" + ",\n ".join(buf) + "]")
 
 
@@ -122,8 +120,12 @@ def read_code(filename) -> list[Word]:
         code = json.loads(file.read())
     prog: list[Word] = []
     for instr in code:
-        word = Word(instr["index"], Opcode[instr["opcode"]], convert_to_register(instr["arg1"]),
-                    convert_to_register(instr["arg2"]))
+        word = Word(
+            instr["index"],
+            Opcode[instr["opcode"]],
+            convert_to_register(instr["arg1"]),
+            convert_to_register(instr["arg2"]),
+        )
         prog.append(word)
     for index in range(len(prog), mem_size):
         prog.append(Word(index, Opcode.JUMP, 0))

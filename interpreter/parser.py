@@ -95,8 +95,16 @@ def parse_first_level_operation(tokens: list[tuple[Token, str]]) -> AstNode:
 def parse_second_level_operations(tokens: list[tuple[Token, str]]) -> AstNode:
     left_node: AstNode = parse_literal_or_name(tokens)
     node: AstNode = left_node
-    while tokens and tokens[0][0] in [Token.MUL, Token.DIV, Token.AND, Token.OR, Token.XOR, Token.SHL, Token.SHR,
-                                      Token.MOD]:
+    while tokens and tokens[0][0] in [
+        Token.MUL,
+        Token.DIV,
+        Token.AND,
+        Token.OR,
+        Token.XOR,
+        Token.SHL,
+        Token.SHR,
+        Token.MOD,
+    ]:
         node = AstNode.from_token(tokens[0][0])
         tokens.pop(0)
         node.add_child(left_node)
