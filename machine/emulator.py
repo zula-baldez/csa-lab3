@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 import logging
 import sys
 from enum import Enum
 
-from machine.isa import Opcode, Word, read_code, Register, sp, pc, dr
+from machine.isa import Opcode, Register, Word, dr, pc, read_code, sp
 
 
 class Alu:
@@ -25,55 +27,44 @@ class Alu:
 
     def execute(self, opcode: Opcode, arg1: int, arg2: int = 0) -> int:
         res: int
-        if opcode is Opcode.ADD or opcode is Opcode.ADD_LIT:
-            res = arg1 + arg2
-        elif opcode is Opcode.INC:
-            res = arg1 + 1
-        elif opcode is Opcode.DEC:
-            res = arg1 - 1
-        elif opcode is Opcode.SHR:
-            res = arg1 >> arg2
-        elif opcode is Opcode.SHL:
-            res = 0 if arg1 == 0 else arg1 << arg2
-        elif opcode is Opcode.XOR:
-            res = arg1 ^ arg2
-        elif opcode is Opcode.AND:
-            res = arg1 & arg2
-        elif opcode is Opcode.OR:
-            res = arg1 | arg2
-        elif opcode is Opcode.NEG:
-            res = ~arg1
-
+        operations = {
+            Opcode.ADD: lambda a, b: a + b,
+            Opcode.ADD_LIT: lambda a, b: a + b,
+            Opcode.INC: lambda a, b: a + 1,
+            Opcode.DEC: lambda a, b: a - 1,
+            Opcode.SHR: lambda a, b: a >> b,
+            Opcode.SHL: lambda a, b: 0 if a == 0 else a << b,
+            Opcode.XOR: lambda a, b: a ^ b,
+            Opcode.AND: lambda a, b: a & b,
+            Opcode.OR: lambda a, b: a | b,
+            Opcode.NEG: lambda a, b: ~a,
+        }
+        operation = operations.get(opcode, None)
+        if operation is not None:
+            res = operation(arg1, arg2)
         else:
             raise ValueError("unknown opcode: {}".format(opcode))
         self.set_flags(res)
-
         return res
 
 
 class DataPath:
-    """Тракт данных (пассивный), включая: ввод/вывод, память и арифметику.
 
+    registers: dict[Register, int]
 
-    - `signal_latch_reg_num` -- общий для всех регистров;
-    - `signal_wr` -- запись в память данных;
-    - `signal_output` -- вывод в порт;
-    """
-    registers: dict[Register, int] = {}
+    mem_size: int
 
-    mem_size: int = 0
+    memory: list[Word]
 
-    memory: list[Word] = []
+    input_ports: dict[int, list[str]]
 
-    input_buffer: list[str] = None
-
-    input_ports: dict[int, list[str]] = {}
-
-    output_ports: dict[int, list[str]] = {}
+    output_ports: dict[int, list[str]]
 
     alu: Alu = None
 
     def __init__(self, data: list[Word], ports: dict[int, list[str]], mem_size: int = 4096):
+        self.registers = {}
+        self.output_ports = {}
         self.mem_size = mem_size
         self.memory = data
         self.alu = Alu()
@@ -98,6 +89,7 @@ class DataPath:
             return instr
         if wr:
             instr.arg1 = data
+        return None
 
     def perform_arithmetic(self, opcode: Opcode, arg1: int, arg2: int = 0) -> int:
         return self.alu.execute(opcode, arg1, arg2)
@@ -118,7 +110,6 @@ class DataPath:
 
 
 class ControlUnit:
-
     data_path: DataPath = None
 
     _tick: int = 0
@@ -191,7 +182,6 @@ class ControlUnit:
         self.tick()
 
     def ld(self, instr: Word):
-        word = self.data_path.memory[4095]
         reg_to: Register = instr.arg1
         reg_from: Register = instr.arg2
         reg_data: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[reg_from])
@@ -253,7 +243,7 @@ class ControlUnit:
         self.data_path.latch_reg(reg, data)
         self.tick()
 
-    def print(self, instr: Word):
+    def print_symbol(self, instr: Word):
         reg: Register = instr.arg1
         data: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[reg])
         port: int = instr.arg2
@@ -312,50 +302,45 @@ class ControlUnit:
         self.data_path.latch_reg(instr.arg1, res)
         self.tick()
 
+    def unary_arythm(self, instr: Word):
+        res: int = self.data_path.perform_arithmetic(instr.opcode, self.data_path.load_reg(instr.arg1))
+        self.data_path.latch_reg(instr.arg1, res)
+        self.tick()
+
     def decode_and_execute_instruction(self):
         instr: Word = self.fetch_instruction()
         opcode: Opcode = instr.opcode
-
+        opcode_mapping = {
+            Opcode.LD_ADDR: self.ld_addr,
+            Opcode.LD_LIT: self.ld_lit,
+            Opcode.LD: self.ld,
+            Opcode.LD_STACK: self.ld_stack,
+            Opcode.ST_ADDR: self.st_addr,
+            Opcode.ST: self.st,
+            Opcode.ST_STACK: self.st_stack,
+            Opcode.MV: self.mv,
+            Opcode.READ: self.read,
+            Opcode.PRINT: self.print_symbol,
+            Opcode.ADD: self.arythm,
+            Opcode.OR: self.arythm,
+            Opcode.AND: self.arythm,
+            Opcode.SHL: self.arythm,
+            Opcode.SHR: self.arythm,
+            Opcode.XOR: self.arythm,
+            Opcode.INC: self.unary_arythm,
+            Opcode.DEC: self.unary_arythm,
+            Opcode.ADD_LIT: self.add_lit,
+            Opcode.CMP: self.cmp,
+            Opcode.SUB: self.sub,
+            Opcode.PUSH: self.push,
+            Opcode.POP: self.pop,
+            Opcode.NEG: self.unary_arythm
+        }
         if self.decode_and_execute_control_flow_instruction(instr, opcode):
             return
-        if opcode is Opcode.LD_ADDR:
-            self.ld_addr(instr)
-        if opcode is Opcode.LD_LIT:
-            self.ld_lit(instr)
-        if opcode is Opcode.LD:
-            self.ld(instr)
-        if opcode is Opcode.LD_STACK:
-            self.ld_stack(instr)
-        if opcode is Opcode.ST_ADDR:
-            self.st_addr(instr)
-        if opcode is Opcode.ST:
-            self.st(instr)
-        if opcode is Opcode.ST_STACK:
-            self.st_stack(instr)
-        if opcode is Opcode.MV:
-            self.mv(instr)
-        if opcode is Opcode.READ:
-            self.read(instr)
-        if opcode is Opcode.PRINT:
-            self.print(instr)
-        if opcode in {Opcode.ADD, Opcode.OR, Opcode.AND, Opcode.SHL, Opcode.SHR, Opcode.XOR}:
-            self.arythm(instr)
-        if opcode in {Opcode.INC, Opcode.DEC}:
-            res: int = self.data_path.perform_arithmetic(opcode, self.data_path.load_reg(instr.arg1))
-            self.tick()
-            self.data_path.latch_reg(instr.arg1, res)
-            self.tick()
+        if opcode in opcode_mapping:
+            opcode_mapping[opcode](instr)
 
-        if opcode is Opcode.ADD_LIT:
-            self.add_lit(instr)
-        if opcode is Opcode.CMP:
-            self.cmp(instr)
-        if opcode is Opcode.SUB:
-            self.sub(instr)
-        if opcode is Opcode.PUSH:
-            self.push(instr)
-        if opcode is Opcode.POP:
-            self.pop(instr)
         self.data_path.latch_reg(pc, self.data_path.registers[pc] + 1)
         self.tick()
 
@@ -365,8 +350,8 @@ class ControlUnit:
         return value
 
     def __repr__(self):
-        formatted_registers = {f'r{register.value}': value for register, value in self.data_path.registers.items()}
-        formatted_string = ', '.join([f"'{key}': {value}" for key, value in formatted_registers.items()])
+        formatted_registers = {f"r{register.value}": value for register, value in self.data_path.registers.items()}
+        formatted_string = ", ".join([f"'{key}': {value}" for key, value in formatted_registers.items()])
 
         state_repr = "TICK: {:3} PC: {:3}  MEM_OUT: {} {} reg: {}".format(
             self._tick,

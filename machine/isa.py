@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 import json
 from enum import Enum
-from typing import Optional
 
 
 class EnumEncoder(json.JSONEncoder):
@@ -84,8 +85,8 @@ class StaticMemAddressStub:
 class Word:
     index: int
     opcode: Opcode
-    arg1: Optional[int | Register | StaticMemAddressStub]
-    arg2: Optional[int | Register | StaticMemAddressStub]
+    arg1: int | Register | StaticMemAddressStub
+    arg2: int | Register | StaticMemAddressStub
 
     def __init__(self, index: int, opcode: Opcode, arg1=None, arg2=None):
         self.opcode = opcode

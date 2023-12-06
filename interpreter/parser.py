@@ -1,46 +1,54 @@
+from __future__ import annotations
+
 from enum import Enum
-from interpreter.lexer import lex, Token
+
+from interpreter.lexer import Token, lex
 
 
 class AstType(Enum):
-    IF = 'if'
-    ELSE = 'else'
-    WHILE = 'while'
-    READ = 'read'
-    PRINT_STR = 'print_str'
-    PRINT_INT = 'print_int'
-    LET = 'let'
-    EQ = 'eq'
-    GE = 'ge'
-    GT = 'gt'
-    LT = 'lt'
-    LE = 'ne'
-    NEQ = 'neq'
-    PLUS = 'plus'
-    MINUS = 'minus'
-    MUL = 'mul'
-    DIV = 'div'
-    SHL = 'shl'
-    SHR = 'shr'
-    AND = 'and'
-    OR = 'or'
-    XOR = 'xor'
-    STRING = 'string'
-    NUMBER = 'number'
-    NAME = 'name'
-    ROOT = 'root'
-    BLOCK = 'block'
-    ASSIGN = 'assign'
-    CMP = 'cmp'
-    MOD = 'mod'
+    IF = "if"
+    ELSE = "else"
+    WHILE = "while"
+    READ = "read"
+    PRINT_STR = "print_str"
+    PRINT_INT = "print_int"
+    LET = "let"
+    EQ = "eq"
+    GE = "ge"
+    GT = "gt"
+    LT = "lt"
+    LE = "ne"
+    NEQ = "neq"
+    PLUS = "plus"
+    MINUS = "minus"
+    MUL = "mul"
+    DIV = "div"
+    SHL = "shl"
+    SHR = "shr"
+    AND = "and"
+    OR = "or"
+    XOR = "xor"
+    STRING = "string"
+    NUMBER = "number"
+    NAME = "name"
+    ROOT = "root"
+    BLOCK = "block"
+    ASSIGN = "assign"
+    CMP = "cmp"
+    MOD = "mod"
 
 
 token2type = {getattr(Token, node_type.name): node_type for node_type in AstType if hasattr(Token, node_type.name)}
 
 
+class InvalidStatementError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+
 def map_token_to_type(token: Token) -> AstType:
-    if token not in token2type:
-        raise Exception(f'Invalid token {token.name}')
+    assert token in token2type
     return token2type[token]
 
 
@@ -51,16 +59,15 @@ class AstNode:
         self.value = value
 
     @classmethod
-    def from_token(cls, token: Token, value: str = "") -> 'AstNode':
+    def from_token(cls, token: Token, value: str = "") -> AstNode:
         return cls(map_token_to_type(token), value)
 
-    def add_child(self, node: 'AstNode') -> None:
+    def add_child(self, node: AstNode) -> None:
         self.children.append(node)
 
 
 def match_list(tokens: list[tuple[Token, str]], token_req: list[Token]) -> None:
-    if tokens[0][0] not in token_req:
-        raise Exception(f'Invalid syntax on token {tokens[0][0].name}')
+    assert tokens[0][0] in token_req
 
 
 def match_list_and_delete(tokens: list[tuple[Token, str]], token_req: list[Token]) -> tuple[Token, str]:
@@ -114,10 +121,9 @@ def parse_operand(tokens: list[tuple[Token, str]]) -> AstNode:
         node: AstNode = AstNode.from_token(tokens[0][0], tokens[0][1])
         tokens.pop(0)
         return node
-    elif tokens[0][0] == Token.READ:
+    if tokens[0][0] == Token.READ:
         return parse_read(tokens)
-    else:
-        node: AstNode = parse_math_expression(tokens)
+    node: AstNode = parse_math_expression(tokens)
     return node
 
 
@@ -204,16 +210,15 @@ def parse_block(tokens: list[tuple[Token, str]]) -> AstNode:
 def parse_statement(tokens: list[tuple[Token, str]]) -> AstNode:
     if tokens[0][0] == Token.WHILE:
         return parse_while(tokens)
-    elif tokens[0][0] == Token.IF:
+    if tokens[0][0] == Token.IF:
         return parse_if(tokens)
-    elif tokens[0][0] == Token.LET or tokens[0][0] == Token.NAME:
+    if tokens[0][0] == Token.LET or tokens[0][0] == Token.NAME:
         return parse_allocation_or_assignment(tokens)
-    elif tokens[0][0] == Token.PRINT_STR or tokens[0][0] == Token.PRINT_INT:
+    if tokens[0][0] == Token.PRINT_STR or tokens[0][0] == Token.PRINT_INT:
         return parse_print(tokens)
-    elif tokens[0][0] == Token.READ:
+    if tokens[0][0] == Token.READ:
         return parse_read(tokens)
-    else:
-        raise Exception('Invalid statement {}'.format(tokens[0][0].name))
+    raise InvalidStatementError("Invalid statement {}".format(tokens[0][0].name))
 
 
 def parse_program(tokens: list[tuple[Token, str]]) -> AstNode:

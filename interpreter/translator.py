@@ -1,7 +1,17 @@
+from __future__ import annotations
+
 import sys
 
-from interpreter.parser import AstType, AstNode, parse
-from machine.isa import Opcode, Word, Register, write_code, StaticMemAddressStub
+from machine.isa import Opcode, Register, StaticMemAddressStub, Word, write_code
+
+from interpreter.parser import AstNode, AstType, parse
+
+
+class WrongTokenTypeError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
 
 ast_type2opcode = {
     AstType.EQ: Opcode.JE,
@@ -110,13 +120,12 @@ class Program:
         reg = self.var_to_reg.get(var_name)
         if reg is not None:
             return reg
-        else:
-            reg = self.clear_register_for_variable()
-            var_offs = self.get_variable_offset(var_name)
-            self.add_instruction(Opcode.LD_STACK, reg, var_offs)
-            self.var_to_reg[var_name] = reg
-            self.reg_to_var[reg] = var_name
-            return reg
+        reg = self.clear_register_for_variable()
+        var_offs = self.get_variable_offset(var_name)
+        self.add_instruction(Opcode.LD_STACK, reg, var_offs)
+        self.var_to_reg[var_name] = reg
+        self.reg_to_var[reg] = var_name
+        return reg
 
     def clear_variable_in_registers(self, name: str) -> None:
         reg: Register | None = self.var_to_reg.get(name)
@@ -148,7 +157,7 @@ def ast_to_machine_code_rec(node: AstNode, program: Program) -> None:
     elif node.astType == AstType.PRINT_STR or node.astType == AstType.PRINT_INT:
         (ast_to_machine_code_print(node, program))
     else:
-        raise Exception('Invalid ast node type {}'.format(node.astType.name))
+        raise WrongTokenTypeError("Invalid ast node type {}".format(node.astType.name))
 
 
 def ast_to_machine_code_math(node: AstNode, program: Program) -> None:
@@ -175,19 +184,27 @@ def ast_to_machine_code_math_rec(node: AstNode, program: Program, is_left: bool 
         program.add_instruction(Opcode.PUSH, Register.r10)
     program.add_instruction(Opcode.POP, Register.r10)
     program.add_instruction(Opcode.POP, Register.r9)
-    if node.astType is AstType.DIV:
-        ast_to_machine_code_div(node, program)
-    elif node.astType is AstType.MOD:
-        ast_to_machine_code_mod(node, program)
-    elif node.astType is AstType.MUL:
-        ast_to_machine_code_mul(program)
-    else:
+    if not perform_userspace_math(node, program):
         program.add_instruction(ast_type2opcode[node.astType], Register.r9, Register.r10)
     program.add_instruction(Opcode.PUSH, Register.r9)
     return False
 
 
-def ast_to_machine_code_mul(program):
+def perform_userspace_math(node: AstNode, program: Program) -> bool:
+    if node.astType is AstType.DIV:
+        ast_to_machine_code_div(node, program)
+        return True
+    if node.astType is AstType.MOD:
+        ast_to_machine_code_mod(node, program)
+        return True
+    if node.astType is AstType.MUL:
+        ast_to_machine_code_mul(program)
+        return True
+    return False
+
+
+
+def ast_to_machine_code_mul(program: Program):
     program.add_instruction(Opcode.PUSH, Register.r3)  # to store 1 to check last bit
     program.add_instruction(Opcode.PUSH, Register.r4)  # to store the result of multiplication by the power of 2
     program.add_instruction(Opcode.PUSH, Register.r5)  # counter
@@ -411,12 +428,10 @@ def ast_to_machine_code_print(node: AstNode, program: Program) -> None:
 
 def parse_expression(node: AstNode, program: Program) -> int | None:
     if node.astType == AstType.NAME:
-        var_offs = program.get_variable_offset(node.value)
-        return var_offs
+        return program.get_variable_offset(node.value)
     if node.astType == AstType.STRING:
-        addr = program.add_variable_in_static_mem(node.value)
-        return addr
-    ast_to_machine_code_math(node, program)
+        return program.add_variable_in_static_mem(node.value)
+    return ast_to_machine_code_math(node, program)
 
 
 def main(source, target):
