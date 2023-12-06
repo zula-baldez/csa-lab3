@@ -3,36 +3,36 @@ from interpreter.lexer import lex, Token
 
 
 class AstType(Enum):
-    IF = 'if'
-    ELSE = 'else'
-    WHILE = 'while'
-    READ = 'read'
-    PRINT_STR = 'print_str'
-    PRINT_INT = 'print_int'
-    LET = 'let'
-    EQ = 'eq'
-    GE = 'ge'
-    GT = 'gt'
-    LT = 'lt'
-    LE = 'ne'
-    NEQ = 'neq'
-    PLUS = 'plus'
-    MINUS = 'minus'
-    MUL = 'mul'
-    DIV = 'div'
-    SHL = 'shl'
-    SHR = 'shr'
-    AND = 'and'
-    OR = 'or'
-    XOR = 'xor'
-    STRING = 'string'
-    NUMBER = 'number'
-    NAME = 'name'
-    ROOT = 'root'
-    BLOCK = 'block'
-    ASSIGN = 'assign'
-    CMP = 'cmp'
-    MOD = 'mod'
+    IF = "if"
+    ELSE = "else"
+    WHILE = "while"
+    READ = "read"
+    PRINT_STR = "print_str"
+    PRINT_INT = "print_int"
+    LET = "let"
+    EQ = "eq"
+    GE = "ge"
+    GT = "gt"
+    LT = "lt"
+    LE = "ne"
+    NEQ = "neq"
+    PLUS = "plus"
+    MINUS = "minus"
+    MUL = "mul"
+    DIV = "div"
+    SHL = "shl"
+    SHR = "shr"
+    AND = "and"
+    OR = "or"
+    XOR = "xor"
+    STRING = "string"
+    NUMBER = "number"
+    NAME = "name"
+    ROOT = "root"
+    BLOCK = "block"
+    ASSIGN = "assign"
+    CMP = "cmp"
+    MOD = "mod"
 
 
 token2type = {getattr(Token, node_type.name): node_type for node_type in AstType if hasattr(Token, node_type.name)}
@@ -40,7 +40,7 @@ token2type = {getattr(Token, node_type.name): node_type for node_type in AstType
 
 def map_token_to_type(token: Token) -> AstType:
     if token not in token2type:
-        raise Exception(f'Invalid token {token.name}')
+        raise Exception(f"Invalid token {token.name}")
     return token2type[token]
 
 
@@ -51,16 +51,16 @@ class AstNode:
         self.value = value
 
     @classmethod
-    def from_token(cls, token: Token, value: str = "") -> 'AstNode':
+    def from_token(cls, token: Token, value: str = "") -> "AstNode":
         return cls(map_token_to_type(token), value)
 
-    def add_child(self, node: 'AstNode') -> None:
+    def add_child(self, node: "AstNode") -> None:
         self.children.append(node)
 
 
 def match_list(tokens: list[tuple[Token, str]], token_req: list[Token]) -> None:
     if tokens[0][0] not in token_req:
-        raise Exception(f'Invalid syntax on token {tokens[0][0].name}')
+        raise Exception(f"Invalid syntax on token {tokens[0][0].name}")
 
 
 def match_list_and_delete(tokens: list[tuple[Token, str]], token_req: list[Token]) -> tuple[Token, str]:
@@ -213,7 +213,7 @@ def parse_statement(tokens: list[tuple[Token, str]]) -> AstNode:
     elif tokens[0][0] == Token.READ:
         return parse_read(tokens)
     else:
-        raise Exception('Invalid statement {}'.format(tokens[0][0].name))
+        raise Exception("Invalid statement {}".format(tokens[0][0].name))
 
 
 def parse_program(tokens: list[tuple[Token, str]]) -> AstNode:

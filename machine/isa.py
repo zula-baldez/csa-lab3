@@ -6,43 +6,43 @@ from typing import Optional
 class EnumEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Register):
-            return 'r' + str(obj.value)
+            return "r" + str(obj.value)
         return super().default(obj)
 
 
 class Opcode(Enum):
-    ST_ADDR = 'ST_ADDR'
-    ST = 'ST'
-    ST_STACK = 'ST_STACK'
-    LD_ADDR = 'LD_ADDR'
-    LD_LIT = 'LD_LIT'
-    LD_STACK = 'LD_STACK'
-    LD = 'LD'
-    MV = 'MV'
-    READ = 'READ'
-    PRINT = 'PRINT'
-    JLE = 'JLE'  # less or equals
-    JL = 'JL'  # less
-    JGE = 'JGE'  # greater or equals
-    JG = 'JG'  # greater
-    JNE = 'JNE'  # not equals
-    JE = 'JE'  # equals
-    JUMP = 'JUMP'
-    ADD = 'ADD'
-    ADD_LIT = 'ADD_LIT'
-    SUB = 'SUB'
-    NEG = 'NEG'
-    SHL = 'SHL'
-    SHR = 'SHR'
-    AND = 'AND'
-    OR = 'OR'
-    XOR = 'XOR'
-    CMP = 'CMP'
-    PUSH = 'PUSH'
-    POP = 'POP'
-    INC = 'INC'
-    DEC = 'DEC'
-    HALT = 'HALT'
+    ST_ADDR = "ST_ADDR"
+    ST = "ST"
+    ST_STACK = "ST_STACK"
+    LD_ADDR = "LD_ADDR"
+    LD_LIT = "LD_LIT"
+    LD_STACK = "LD_STACK"
+    LD = "LD"
+    MV = "MV"
+    READ = "READ"
+    PRINT = "PRINT"
+    JLE = "JLE"  # less or equals
+    JL = "JL"  # less
+    JGE = "JGE"  # greater or equals
+    JG = "JG"  # greater
+    JNE = "JNE"  # not equals
+    JE = "JE"  # equals
+    JUMP = "JUMP"
+    ADD = "ADD"
+    ADD_LIT = "ADD_LIT"
+    SUB = "SUB"
+    NEG = "NEG"
+    SHL = "SHL"
+    SHR = "SHR"
+    AND = "AND"
+    OR = "OR"
+    XOR = "XOR"
+    CMP = "CMP"
+    PUSH = "PUSH"
+    POP = "POP"
+    INC = "INC"
+    DEC = "DEC"
+    HALT = "HALT"
 
 
 mem_size: int = 4096
@@ -111,7 +111,7 @@ def write_code(filename: str, code: list[Word]) -> None:
 
 
 def convert_to_register(arg):
-    if arg and isinstance(arg, str) and arg.startswith('r'):
+    if arg and isinstance(arg, str) and arg.startswith("r"):
         return Register[arg]
     return arg
 
