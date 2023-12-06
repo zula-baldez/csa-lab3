@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import sys
 
-from interpreter.parser import AstNode, AstType, parse
 from machine.isa import Opcode, Register, StaticMemAddressStub, Word, write_code
+
+from interpreter.parser import AstNode, AstType, parse
 
 
 class WrongTokenTypeError(Exception):
