@@ -2,9 +2,8 @@ from __future__ import annotations
 
 import sys
 
-from machine.isa import Opcode, Register, StaticMemAddressStub, Word, write_code
-
 from interpreter.parser import AstNode, AstType, parse
+from machine.isa import Opcode, Register, StaticMemAddressStub, Word, write_code
 
 
 class WrongTokenTypeError(Exception):
@@ -53,10 +52,10 @@ class Program:
         self.input_buffer_size = 32
 
     def add_instruction(
-        self,
-        opcode: Opcode,
-        arg1: int | Register | StaticMemAddressStub = 0,
-        arg2: int | Register | StaticMemAddressStub = 0,
+            self,
+            opcode: Opcode,
+            arg1: int | Register | StaticMemAddressStub = 0,
+            arg2: int | Register | StaticMemAddressStub = 0,
     ) -> int:
         self.machine_code.append(Word(self.current_command_address, opcode, arg1, arg2))
         self.current_command_address += 1
@@ -158,8 +157,8 @@ def ast_to_machine_code_rec(node: AstNode, program: Program) -> None:
         ast_to_machine_code_let(node, program)
     elif node.astType == AstType.ASSIGN:
         ast_to_machine_code_assign(node, program)
-    elif node.astType == AstType.PRINT_STR or node.astType == AstType.PRINT_INT:
-        (ast_to_machine_code_print(node, program))
+    elif node.astType == AstType.PRINT_STR or node.astType == AstType.PRINT_INT or node.astType == AstType.PRINT_CHAR:
+        ast_to_machine_code_print(node, program)
     else:
         raise WrongTokenTypeError("Invalid ast node type {}".format(node.astType.name))
 
@@ -349,6 +348,10 @@ def ast_to_machine_code_read(program: Program) -> None:
     program.add_instruction(Opcode.ST_ADDR, Register.r11, StaticMemAddressStub())
 
 
+def ast_to_machine_code_read_char(program: Program) -> None:
+    program.add_instruction(Opcode.READ, Register.r9, 0)
+
+
 # util func, сохранение значения по адресу(оба не в регистрах)
 def st_literal_by_stack_offset(program: Program, value: int | StaticMemAddressStub, var_addr: int):
     reg: Register = program.clear_register_for_variable()
@@ -369,6 +372,10 @@ def ast_to_machine_code_assign(node: AstNode, program: Program) -> None:
         elif node.children[1].astType == AstType.READ:
             ast_to_machine_code_read(program)
             st_literal_by_stack_offset(program, StaticMemAddressStub(), addr)
+            program.clear_variable_in_registers(name)
+        elif node.children[1].astType == AstType.READ_CHAR:
+            ast_to_machine_code_read_char(program)
+            program.add_instruction(Opcode.ST_STACK, Register.r9, addr)
             program.clear_variable_in_registers(name)
         else:
             ast_to_machine_code_math(node.children[1], program)
@@ -427,6 +434,10 @@ def ast_to_machine_code_print(node: AstNode, program: Program) -> None:
         program.add_instruction(Opcode.PRINT, Register.r12, 0)
         program.add_instruction(Opcode.INC, Register.r11)
         program.add_instruction(Opcode.JUMP, while_start)
+    if node.astType == AstType.PRINT_CHAR:
+        ast_to_machine_code_math(node.children[0], program)
+        program.add_instruction(Opcode.PRINT, Register.r9, 0)
+
 
 
 def parse_expression(node: AstNode, program: Program) -> int | None:

@@ -410,7 +410,7 @@ def main(code_file, input_file):
     output, instr_counter, ticks = simulation(
         code,
         input_tokens=input_token,
-        limit=100000,
+        limit=10000,
     )
 
     print("".join(output))

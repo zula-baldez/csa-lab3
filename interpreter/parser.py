@@ -10,8 +10,10 @@ class AstType(Enum):
     ELSE = "else"
     WHILE = "while"
     READ = "read"
+    READ_CHAR = "read_char"
     PRINT_STR = "print_str"
     PRINT_INT = "print_int"
+    PRINT_CHAR = "print_char"
     LET = "let"
     EQ = "eq"
     GE = "ge"
@@ -129,7 +131,7 @@ def parse_operand(tokens: list[tuple[Token, str]]) -> AstNode:
         node: AstNode = AstNode.from_token(tokens[0][0], tokens[0][1])
         tokens.pop(0)
         return node
-    if tokens[0][0] == Token.READ:
+    if tokens[0][0] == Token.READ or tokens[0][0] == Token.READ_CHAR:
         return parse_read(tokens)
     node: AstNode = parse_math_expression(tokens)
     return node
@@ -186,21 +188,23 @@ def parse_allocation_or_assignment(tokens: list[tuple[Token, str]]) -> AstNode:
 
 def parse_print(tokens: list[tuple[Token, str]]) -> AstNode:
     node: AstNode = AstNode.from_token(tokens[0][0])
-    match_list_and_delete(tokens, [Token.PRINT_STR, Token.PRINT_INT])
+    match_list_and_delete(tokens, [Token.PRINT_STR, Token.PRINT_INT, Token.PRINT_CHAR])
     match_list_and_delete(tokens, [Token.LPAREN])
     node.add_child(parse_operand(tokens))
     if node.astType == AstType.PRINT_INT:
         assert node.children[0].astType != AstType.STRING
     if node.astType == AstType.PRINT_STR:
         assert node.children[0].astType == AstType.STRING or node.children[0].astType == AstType.NAME
+    if node.astType == AstType.PRINT_CHAR:
+        assert node.children[0].astType == AstType.NAME
     match_list_and_delete(tokens, [Token.RPAREN])
     match_list_and_delete(tokens, [Token.SEMICOLON])
     return node
 
 
 def parse_read(tokens: list[tuple[Token, str]]) -> AstNode:
-    node: AstNode = AstNode.from_token(Token.READ)
-    match_list_and_delete(tokens, [Token.READ])
+    node: AstNode = AstNode.from_token(tokens[0][0])
+    match_list_and_delete(tokens, [Token.READ, Token.READ_CHAR])
     match_list_and_delete(tokens, [Token.LPAREN])
     match_list_and_delete(tokens, [Token.RPAREN])
     return node
@@ -222,7 +226,7 @@ def parse_statement(tokens: list[tuple[Token, str]]) -> AstNode:
         return parse_if(tokens)
     if tokens[0][0] == Token.LET or tokens[0][0] == Token.NAME:
         return parse_allocation_or_assignment(tokens)
-    if tokens[0][0] == Token.PRINT_STR or tokens[0][0] == Token.PRINT_INT:
+    if tokens[0][0] == Token.PRINT_STR or tokens[0][0] == Token.PRINT_INT or tokens[0][0] == Token.PRINT_CHAR:
         return parse_print(tokens)
     if tokens[0][0] == Token.READ:
         return parse_read(tokens)
