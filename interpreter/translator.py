@@ -53,10 +53,10 @@ class Program:
         self.input_buffer_size = 32
 
     def add_instruction(
-            self,
-            opcode: Opcode,
-            arg1: int | Register | StaticMemAddressStub = 0,
-            arg2: int | Register | StaticMemAddressStub = 0,
+        self,
+        opcode: Opcode,
+        arg1: int | Register | StaticMemAddressStub = 0,
+        arg2: int | Register | StaticMemAddressStub = 0,
     ) -> int:
         self.machine_code.append(Word(self.current_command_address, opcode, arg1, arg2))
         self.current_command_address += 1
