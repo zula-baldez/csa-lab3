@@ -70,7 +70,9 @@ class Register(Enum):
 
 sp: Register = Register.r15
 
-pc: Register = Register.r14
+pc: Register = Register.r13
+
+dr: Register = Register.r14
 
 
 class StaticMemAddressStub:

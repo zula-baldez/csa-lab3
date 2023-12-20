@@ -82,12 +82,12 @@ class DataPath:
     def _get_instruction(self, addr: int) -> Word:
         return self.memory[addr]
 
-    def memory_perform(self, oe: bool, wr: bool, data: int = 0) -> Word | None:
-        instr: Word = self._get_instruction(self.registers[dr])
+    def memory_perform(self, oe: bool, wr: bool, addr: int) -> Word | None:
+        instr: Word = self._get_instruction(addr)
         if oe:
             return instr
         if wr:
-            instr.arg1 = data
+            instr.arg1 = self.registers[dr]
         return None
 
     def perform_arithmetic(self, opcode: Opcode, arg1: int, arg2: int = 0) -> int:
@@ -166,17 +166,17 @@ class ControlUnit:
 
     def fetch_instruction(self) -> Word:
         addr: int = self.data_path.registers[pc]
-        self.data_path.latch_reg(dr, addr)
+        instr: Word = self.data_path.memory[addr]
+        self.data_path.latch_reg(dr, instr.arg1)
         self.tick()
-        instr: Word = self.data_path.memory[self.data_path.registers[dr]]
         return instr
 
     def ld_addr(self, instr: Word):
         addr: int = instr.arg2
         reg: Register = instr.arg1
-        self.data_path.latch_reg(dr, addr)
+        data: Word = self.data_path.memory_perform(True, False, addr)
+        self.data_path.latch_reg(dr, data.arg1)
         self.tick()
-        data: Word = self.data_path.memory_perform(True, False)
         self.data_path.latch_reg(reg, data.arg1)
         self.tick()
 
@@ -189,48 +189,54 @@ class ControlUnit:
     def ld(self, instr: Word):
         reg_to: Register = instr.arg1
         addr_reg: Register = instr.arg2
-        reg_data: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[addr_reg])
-        self.data_path.latch_reg(dr, reg_data)
+        addr_to_read: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[addr_reg])
         self.tick()
-        data: Word = self.data_path.memory_perform(True, False)
+        data: Word = self.data_path.memory_perform(True, False, addr_to_read)
+        self.data_path.latch_reg(dr, data.arg1)
+        self.tick()
         self.data_path.latch_reg(reg_to, data.arg1)
         self.tick()
 
     def ld_stack(self, instr: Word):
         reg_to: Register = instr.arg1
         addr: int = self.data_path.mem_size - instr.arg2 - 1
-        self.data_path.latch_reg(dr, addr)
         self.tick()
-        data: Word = self.data_path.memory_perform(True, False)
+        data: Word = self.data_path.memory_perform(True, False, addr)
+        self.data_path.latch_reg(dr, data.arg1)
+        self.tick()
         self.data_path.latch_reg(reg_to, data.arg1)
         self.tick()
 
     def st_addr(self, instr: Word):
         addr: int = instr.arg2
-        self.data_path.latch_reg(dr, addr)
-        self.tick()
         reg: Register = instr.arg1
         reg_data: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[reg])
-        self.data_path.memory_perform(False, True, reg_data)
+        self.tick()
+        self.data_path.latch_reg(dr, reg_data)
+        self.tick()
+        self.data_path.memory_perform(False, True, addr)
         self.tick()
 
     def st(self, instr: Word):
-        addr_reg: Register = instr.arg2
-        addr: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[addr_reg])
-        self.data_path.latch_reg(dr, addr)
-        self.tick()
         data_reg: Register = instr.arg1
         data: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[data_reg])
-        self.data_path.memory_perform(False, True, data)
+        self.tick()
+        self.data_path.latch_reg(dr, data)
+        self.tick()
+        addr_reg: Register = instr.arg2
+        addr: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[addr_reg])
+        self.tick()
+        self.data_path.memory_perform(False, True, addr)
         self.tick()
 
     def st_stack(self, instr: Word):
-        addr_to: int = self.data_path.mem_size - instr.arg2 - 1
-        self.data_path.latch_reg(dr, addr_to)
-        self.tick()
         reg_from: Register = instr.arg1
         data: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[reg_from])
-        self.data_path.memory_perform(False, True, data)
+        self.data_path.latch_reg(dr, data)
+        self.tick()
+        addr_to: int = self.data_path.mem_size - instr.arg2 - 1
+        self.tick()
+        self.data_path.memory_perform(False, True, addr_to)
         self.tick()
 
     def mv(self, instr: Word):
@@ -251,6 +257,7 @@ class ControlUnit:
     def print_symbol(self, instr: Word):
         reg: Register = instr.arg1
         data: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[reg])
+        self.tick()
         port: int = instr.arg2
         self.data_path.put_char(data, port)
         self.tick()
@@ -268,13 +275,13 @@ class ControlUnit:
         self.tick()
 
     def push(self, instr: Word):
-        addr_reg: Register = sp
-        addr: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[addr_reg])
-        self.data_path.latch_reg(dr, addr)
-        self.tick()
         data_reg: Register = instr.arg1
         data: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[data_reg])
-        self.data_path.memory_perform(False, True, data)
+        self.data_path.latch_reg(dr, data)
+        self.tick()
+        addr_reg: Register = sp
+        addr: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[addr_reg])
+        self.data_path.memory_perform(False, True, addr)
         self.tick()
         res: int = self.data_path.perform_arithmetic(Opcode.DEC, self.data_path.load_reg(sp))
         self.data_path.latch_reg(sp, res)
@@ -285,9 +292,10 @@ class ControlUnit:
         self.data_path.latch_reg(sp, res)
         self.tick()
         addr: int = self.data_path.perform_arithmetic(Opcode.ADD, self.data_path.registers[sp], 0)
-        self.data_path.latch_reg(dr, addr)
         self.tick()
-        data: Word = self.data_path.memory_perform(True, False)
+        data: Word = self.data_path.memory_perform(True, False, addr)
+        self.data_path.latch_reg(dr, data.arg1)
+        self.tick()
         self.data_path.latch_reg(instr.arg1, data.arg1)
         self.tick()
 

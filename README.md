@@ -1,12 +1,14 @@
 # CSA lab 3
-
+Выполнил Верещагин Егор Сергеевич P33312
 - `alg | risc | neum | hw | tick | struct | stream | port | pstr | prob2 | pipeline`
+- Без усложнения
 
 
 ## Язык программирования
 Разработанный язык похож является некой упрощенной версией javascript. Строки разделяются точкой с запятой. Язык 
-поддерживает объявление и инициализацию переменных, математические операции, конструкции if, if-else, while, операции read() - читает строку из входного буфера
-и print_str(), print_int(). Язык не поддерживает функции. Есть только 2 типа - int, str. Типизация сильная, динамическая.
+поддерживает объявление и инициализацию переменных, математические операции, конструкции if, if-else, while, операции read() - читает строку из входного буфера,
+read_char() - читает символ,
+и print_str(), print_int(), print_char(). Язык не поддерживает функции, приведенные выше read() и пр - это просто синтаксис. Есть только 2 типа - int, str. Типизация сильная, динамическая.
 Язык поддерживает области видимости, которые определяются блоками while и if.
 ``` ebnf
 program ::= statement | program statement
@@ -17,10 +19,14 @@ conditional ::= if | else
 if ::= "if" "(" comp_expr ")" "{" program "}"
 else ::= "else" "{" program "}"
 while ::= "while" "(" comp_expr ")" "{" program "}"
-read ::= "read(" value ")" semicolon
-print_str ::= "print(" name ")" semicolon | "print(" string ")" semicolon
-print_int ::= "print(" name ")" semicolon | "print(" number ")" semicolon
-allocation ::= "let" name "=" value semicolon
+allocation ::= "let" name "=" value semicolon 
+    | "let" name "=" read_char semicolon 
+    | "let" name "=" read semicolon 
+read ::= "read()" semicolon
+read_char ::= "read_char()" semicolon
+print_str ::= "print_str(" name ")" semicolon | "print(" string ")" semicolon
+print_int ::= "print_int(" name ")" semicolon | "print(" number ")" semicolon
+print_char ::= "print_char(" name ")" semicolon
 value ::= string | number
 string ::= "\"[\w\s,.:;!?()\\-]+\""
 comp_expr ::= expr comparison_sign expr
@@ -39,30 +45,56 @@ let f2 = 2;
 let ans = f2;
 let max = 4000000;
 while( f1 + f2 < max ) {
-let f3 = f1 + f2;
-if (f3 % 2 == 0) {
-  ans = ans + f3;
-}
-f1 = f2;
-f2 = f3;
+  let f3 = f1 + f2;
+  if (f3 % 2 == 0) {
+    ans = ans + f3;
+  }
+  f1 = f2;
+  f2 = f3;
 }
 print_int(ans);
 ```
 
-Поддержка литералов -- поддерживаются числовые литералы. Все строки константные и лежат в статической памяти.
-Все переменные выделяются на стеке.
 
 ## Организация памяти
 
-Модель памяти процессора (приведено списком, так как тривиальна):
+Модель памяти процессора:
 1. Память(общая). Машинное слово -- 32 бита, реализуется списком объектов класса WORD.
 Данные лежат там же, но вместо их опкода поставлена заглушка,
 
-Память программы начинается с машинных инструкций. За ней следует буфер, который выделен для строки из ввода.
-Далее в статической памяти лежат строки в паскальном представлении. Числовые переменные и ссылки на строки лежат на стеке. 
-Числовые литералы выделяются на стеке, строковые в статической памяти.
+Память программы начинается с машинных инструкций.
+Далее в статической памяти лежат строки в паскальном представлении.
+Затем идет специальная ячейка - ссылка на начало свободного блока для чтения из ввода(после компиляции значение этой ячейки равно адресу этой ячейки + 1)
+После нее - свободная память, предназначенная для чтения строк из ввода, а в самом конце - стек
+В общем схема выглядит следующим образом:
+```
+    +-----------------+
+    |       CODE      |
+    +-----------------+
+    |   STATIC_DATA   |
+    +-----------------+
+    |      EMPTY      |
+    |    SPACE PTR    |
+    +-----------------+
+    |      EMPTY      |
+    |      SPACE      |
+    +-----------------+
+    |      STACK      |
+    +-----------------+
 
-Так как до конца компиляции размер программы неизвестен, везде, где нужны адреса строк, ставятся заглушки, которые потом резолвятся
+```
+
+Так как до конца компиляции размер программы неизвестен, а следовательно, и начало статической памяти, везде, где нужны адреса строк, ставятся заглушки, которые потом резолвятся
+
+Все переменные хранятся на стеке. При выходе из блока(while или if) указатель стека сдвигается на значение, которое было до входа в этот блок
+Для адресации переменных введен способ адресации относительно начала стека
+Числовые литералы загружаются непосредственно с помощью операции LD_LIT. Так как операций со строками нет(кроме чтения), то все строки - это константы, лежащие в статической памяти
+Ссылка на них(переменная) при этом лежит на стеке
+
+
+При вычислении используется как стек, так и регистры - стек в основном используется для хранения промежуточных значений(кроме случая, когда операция всего одна), в регистрах хранятся значения переменных для вычисления
+
+
 ## Система команд
 
 Особенности процессора:
@@ -74,40 +106,40 @@ print_int(ans);
 У команды может быть до двух аргументов.
 
 ### Набор инструкций
-| Язык   | Инструкция | Кол-во тактов | операнды       | Пояснение                                          |
-|:-------|:-----------|---------------|:---------------|:---------------------------------------------------|
-|        | ST_ADDR    | 3             | 2 (reg, int)   | Прямая адресация                                   |
-|        | ST         | 4             | 2 (reg, reg)   | Косвенная адресация - в левый по адресу из правого |
-|        | ST_STACK   | 4             | 2 (reg, int)   | Относительно конца стека                           |
-|        | LD_ADDR    | 4             | 2 (reg, int)   | Прямая адресация                                   |
-|        | LD_LIT     | 3             | 2 (reg, int)   | Загрузка литерала                                  |
-|        | LD         | 4             | 2 (reg, reg)   | Косвенная адресация                                |
-|        | LD_STACK   | 4             | 2 (reg, int)   | Относительно конца стека                           |
-|        | MV         | 4             | 2 (reg, reg)   |                                                    |
-| read() | READ_CHAR  | 3             | 2 (reg, port)  |                                                    |
-|        | PRINT_CHAR | 3             | 2 (reg, port)  |                                                    |
-|        | JLE        | 3             | 1 (addr)       |                                                    |
-|        | JL         | 3             | 1 (addr)       |                                                    |
-|        | JGE        | 3             | 1 (addr)       |                                                    |
-|        | JG         | 3             | 1 (addr)       |                                                    |
-|        | JNE        | 3             | 1 (addr)       |                                                    |
-|        | JE         | 3             | 1 (addr)       |                                                    |
-|        | JUMP       | 3             | 1 (addr)       |                                                    |
-| +      | ADD        | 3             | 2 (reg, reg)   |                                                    |
-|        | ADD_LIT    | 3             | 2 (reg, val)   |                                                    |
-|        | NEG        | 3             | 1 (reg)        |                                                    |
-|        | SHL        | 3             | 2 (reg, reg)   |                                                    |
-|        | SHR        | 3             | 2 (reg, reg)   |                                                    |
-|        | AND        | 3             | 2 (reg, reg)   |                                                    |
-|        | OR         | 3             | 2 (reg, reg)   |                                                    |
-|        | XOR        | 3             | 2 (reg, reg)   |                                                    |
-| -      | SUB        | 5             | 2 (reg, reg)   |                                                    |
-|        | CMP        | 5             | 2 (reg1, reg2) |                                                    |
-|        | PUSH       | 5             | 1 (reg)        |                                                    |
-|        | POP        | 5             | 1 (reg)        |                                                    |
-|        | INC        | 3             | 1 (reg)        |                                                    |
-|        | DEC        | 3             | 1 (reg)        |                                                    |
-|        | HALT       | 0             | 0              |                                                    |
+| Инструкция | Кол-во тактов | операнды       | Пояснение                                          |
+|:-----------|---------------|:---------------|:---------------------------------------------------|
+| ST_ADDR    | 4             | 2 (reg, int)   | Прямая адресация                                   |
+| ST         | 5             | 2 (reg, reg)   | Косвенная адресация - в левый по адресу из правого |
+| ST_STACK   | 4             | 2 (reg, int)   | Относительно конца стека                           |
+| LD_ADDR    | 3             | 2 (reg, int)   | Прямая адресация                                   |
+| LD_LIT     | 2             | 2 (reg, int)   | Загрузка литерала                                  |
+| LD         | 4             | 2 (reg, reg)   | Косвенная адресация                                |
+| LD_STACK   | 4             | 2 (reg, int)   | Относительно конца стека                           |
+| MV         | 3             | 2 (reg, reg)   |                                                    |
+| READ_CHAR  | 2             | 2 (reg, port)  |                                                    |
+| PRINT_CHAR | 3             | 2 (reg, port)  |                                                    |
+| JLE        | 3             | 1 (addr)       |                                                    |
+| JL         | 3             | 1 (addr)       |                                                    |
+| JGE        | 3             | 1 (addr)       |                                                    |
+| JG         | 3             | 1 (addr)       |                                                    |
+| JNE        | 3             | 1 (addr)       |                                                    |
+| JE         | 3             | 1 (addr)       |                                                    |
+| JUMP       | 3             | 1 (addr)       |                                                    |
+| ADD        | 3             | 2 (reg, reg)   |                                                    |
+| ADD_LIT    | 2             | 2 (reg, val)   |                                                    |
+| NEG        | 2             | 1 (reg)        |                                                    |
+| SHL        | 3             | 2 (reg, reg)   |                                                    |
+| SHR        | 3             | 2 (reg, reg)   |                                                    |
+| AND        | 3             | 2 (reg, reg)   |                                                    |
+| OR         | 3             | 2 (reg, reg)   |                                                    |
+| XOR        | 3             | 2 (reg, reg)   |                                                    |
+| SUB        | 4             | 2 (reg, reg)   |                                                    |
+| CMP        | 4             | 2 (reg1, reg2) |                                                    |
+| PUSH       | 4             | 1 (reg)        |                                                    |
+| POP        | 5             | 1 (reg)        |                                                    |
+| INC        | 3             | 1 (reg)        |                                                    |
+| DEC        | 3             | 1 (reg)        |                                                    |
+| HALT       | 0             | 0              |                                                    |
 
 
 Умножение и деление, функции вывода строки и числа реализованы на уровне транслятора путем вставки ассемблерного кода.
@@ -132,7 +164,7 @@ print_int(ans);
 - `arg1`, `arg2` -- аргумент (могут отсутствовать);
 - `index` -- адрес.
 
-Типы данных в модуле [machine](./isa.py), где:
+Типы данных в модуле [machine](./machine/isa.py), где:
 
 - `Opcode` -- перечисление кодов операций;
 
@@ -140,7 +172,7 @@ print_int(ans);
 
 Интерфейс командной строки: `translator.py <input_file> <target_file>`
 
-Реализовано в модуле: [translator](./translator.py)
+Реализовано в модуле: [translator](./interpreter/translator.py)
 
 Этапы трансляции (функция `translate`):
 
@@ -152,7 +184,7 @@ print_int(ans);
 
 Каждая нода дерева АСТ переводится в соответсвтющее представление в ассемблерном коде. Для каждого типа ноды написан обработчик,
 в котором эта нода транслируется в машинный код. Основная часть функционала языка - конструкции умножения и деления, вывода и ввода, 
-циклы и ветвления - реализованы на уровне трансляции в машинный код.
+циклы и ветвления - реализованы в user-space на уровне трансляции в машинный код.
 
 
 ## Модель процессора
@@ -165,8 +197,9 @@ print_int(ans);
 изображения схемы.
 
 ![img.png](img.png)
-Модель процессора имеет 16 регистров:
 
+Модель процессора имеет 16 регистров:
+```
 r0 - hardwared 0
 
 r1 - адрес начала стека, относительно этого значения берутся переменные
@@ -180,7 +213,7 @@ r13- program counter
 r14 - DR - адрес записи в память
 
 r15 - stack pointer
-
+```
 
 Ввод и вывод имеет порты
 
@@ -221,6 +254,7 @@ next_symbol - ввести с устройства
 4. [math](golden/math.yml). - тест корректности реализации математических выражений
 5. [prob5](golden/prob5.yml). - prob5 из задания
 6. [prob5_optimized](golden/prob5_optimized.yml). - оптимизированный prob5 без использования деления по модулю
+7. [read](golden/read.yml). - тест корректности нескольких операций чтения
 
 Рассмотрим алгоритм Hello World. Исходный код выглядит следующим образом
 ```
@@ -231,7 +265,7 @@ next_symbol - ввести с устройства
 ```
   [{"index": 0, "opcode": "LD_LIT", "arg1": "r3", "arg2": 0},
    {"index": 1, "opcode": "PUSH", "arg1": "r3", "arg2": 0},
-   {"index": 2, "opcode": "LD_LIT", "arg1": "r4", "arg2": 49},
+   {"index": 2, "opcode": "LD_LIT", "arg1": "r4", "arg2": 17},
    {"index": 3, "opcode": "ST_STACK", "arg1": "r4", "arg2": 0},
    {"index": 4, "opcode": "LD_STACK", "arg1": "r9", "arg2": 0},
    {"index": 5, "opcode": "MV", "arg1": "r9", "arg2": "r11"},
@@ -246,67 +280,37 @@ next_symbol - ввести с устройства
    {"index": 14, "opcode": "INC", "arg1": "r11", "arg2": 0},
    {"index": 15, "opcode": "JUMP", "arg1": 9, "arg2": 0},
    {"index": 16, "opcode": "HALT", "arg1": 0, "arg2": 0},
-   {"index": 17, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 18, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 19, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 20, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 21, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 22, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 23, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 24, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 25, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 26, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 27, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 28, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 29, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 30, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 31, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 32, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 33, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 34, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 35, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 36, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 37, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 38, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 39, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 40, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 41, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 42, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 43, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 44, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 45, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 46, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 47, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 48, "opcode": "JUMP", "arg1": 0, "arg2": 0},
-   {"index": 49, "opcode": "JUMP", "arg1": 13, "arg2": 0},
-   {"index": 50, "opcode": "JUMP", "arg1": 72, "arg2": 0},
-   {"index": 51, "opcode": "JUMP", "arg1": 101, "arg2": 0},
-   {"index": 52, "opcode": "JUMP", "arg1": 108, "arg2": 0},
-   {"index": 53, "opcode": "JUMP", "arg1": 108, "arg2": 0},
-   {"index": 54, "opcode": "JUMP", "arg1": 111, "arg2": 0},
-   {"index": 55, "opcode": "JUMP", "arg1": 44, "arg2": 0},
-   {"index": 56, "opcode": "JUMP", "arg1": 32, "arg2": 0},
-   {"index": 57, "opcode": "JUMP", "arg1": 119, "arg2": 0},
-   {"index": 58, "opcode": "JUMP", "arg1": 111, "arg2": 0},
-   {"index": 59, "opcode": "JUMP", "arg1": 114, "arg2": 0},
-   {"index": 60, "opcode": "JUMP", "arg1": 108, "arg2": 0},
-   {"index": 61, "opcode": "JUMP", "arg1": 100, "arg2": 0},
-   {"index": 62, "opcode": "JUMP", "arg1": 33, "arg2": 0}]
+   {"index": 17, "opcode": "JUMP", "arg1": 13, "arg2": 0},
+   {"index": 18, "opcode": "JUMP", "arg1": 72, "arg2": 0},
+   {"index": 19, "opcode": "JUMP", "arg1": 101, "arg2": 0},
+   {"index": 20, "opcode": "JUMP", "arg1": 108, "arg2": 0},
+   {"index": 21, "opcode": "JUMP", "arg1": 108, "arg2": 0},
+   {"index": 22, "opcode": "JUMP", "arg1": 111, "arg2": 0},
+   {"index": 23, "opcode": "JUMP", "arg1": 44, "arg2": 0},
+   {"index": 24, "opcode": "JUMP", "arg1": 32, "arg2": 0},
+   {"index": 25, "opcode": "JUMP", "arg1": 119, "arg2": 0},
+   {"index": 26, "opcode": "JUMP", "arg1": 111, "arg2": 0},
+   {"index": 27, "opcode": "JUMP", "arg1": 114, "arg2": 0},
+   {"index": 28, "opcode": "JUMP", "arg1": 108, "arg2": 0},
+   {"index": 29, "opcode": "JUMP", "arg1": 100, "arg2": 0},
+   {"index": 30, "opcode": "JUMP", "arg1": 33, "arg2": 0},
+   {"index": 31, "opcode": "JUMP", "arg1": 32, "arg2": 0}]
 ```
 
-В начале располагаются инструкции для выполнения. После них пустая память, зарезерированная для ввода. Сама строка лежит после этой памяти, в самом конце.
+В начале располагаются инструкции для выполнения. После них - статическая память. Сама строка лежит после этой памяти.
 Перед выполнением размер программы будет расширен, чтобы был стек
 
 журнал выглядит следующим образом:
 
 ```
-  DEBUG emulator:simulation TICK:   0 PC:   0  MEM_OUT: r3 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 0, 'r10': 0, 'r11': 0, 'r12': 0, 'r13': 0, 'r14': 0, 'r15': 4095 	  ('0'@Opcode.LD_LIT:Register.r3 0)
-  DEBUG emulator:simulation TICK:   3 PC:   1  MEM_OUT: r3 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 0, 'r10': 0, 'r11': 0, 'r12': 0, 'r13': 1, 'r14': 0, 'r15': 4095 	  ('1'@Opcode.PUSH:Register.r3 0)
-  DEBUG emulator:simulation TICK:   8 PC:   2  MEM_OUT: r4 49 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 0, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 0, 'r10': 0, 'r11': 0, 'r12': 0, 'r13': 2, 'r14': 4095, 'r15': 4094 	  ('2'@Opcode.LD_LIT:Register.r4 49)
-  DEBUG emulator:simulation TICK:  11 PC:   3  MEM_OUT: r4 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 49, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 0, 'r10': 0, 'r11': 0, 'r12': 0, 'r13': 3, 'r14': 2, 'r15': 4094 	  ('3'@Opcode.ST_STACK:Register.r4 0)
-  DEBUG emulator:simulation TICK:  15 PC:   4  MEM_OUT: r9 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 49, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 0, 'r10': 0, 'r11': 0, 'r12': 0, 'r13': 4, 'r14': 4095, 'r15': 4094 	  ('4'@Opcode.LD_STACK:Register.r9 0)
-  DEBUG emulator:simulation TICK:  19 PC:   5  MEM_OUT: r9 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 49, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 49, 'r10': 0, 'r11': 0, 'r12': 0, 'r13': 5, 'r14': 4095, 'r15': 4094 	  ('5'@Opcode.MV:Register.r9 Register.r11)
-  DEBUG emulator:simulation TICK:  23 PC:   6  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 49, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 49, 'r10': 0, 'r11': 49, 'r12': 0, 'r13': 6, 'r14': 5, 'r15': 4094 	  ('6'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 310 PC:  12  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 17, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 12, 'r11': 29, 'r12': 108, 'r13': 12, 'r14': Register.r10, 'r15': 4094 	  ('12'@Opcode.LD:Register.r12 Register.r11)
+  DEBUG emulator:simulation TICK: 315 PC:  13  MEM_OUT: r12 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 17, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 12, 'r11': 29, 'r12': 100, 'r13': 13, 'r14': 100, 'r15': 4094 	  ('13'@Opcode.PRINT:Register.r12 0)
+  DEBUG emulator:simulation TICK: 319 PC:  14  MEM_OUT: r11 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 17, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 12, 'r11': 29, 'r12': 100, 'r13': 14, 'r14': Register.r12, 'r15': 4094 	  ('14'@Opcode.INC:Register.r11 0)
+  DEBUG emulator:simulation TICK: 322 PC:  15  MEM_OUT: 9 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 17, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 12, 'r11': 30, 'r12': 100, 'r13': 15, 'r14': Register.r11, 'r15': 4094 	  ('15'@Opcode.JUMP:9 0)
+  DEBUG emulator:simulation TICK: 324 PC:   9  MEM_OUT: r9 r10 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 17, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 12, 'r11': 30, 'r12': 100, 'r13': 9, 'r14': 9, 'r15': 4094 	  ('9'@Opcode.CMP:Register.r9 Register.r10)
+  DEBUG emulator:simulation TICK: 329 PC:  10  MEM_OUT: 16 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 17, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 12, 'r11': 30, 'r12': 100, 'r13': 10, 'r14': Register.r9, 'r15': 4094 	  ('10'@Opcode.JE:16 0)
+  DEBUG emulator:simulation TICK: 331 PC:  11  MEM_OUT: r10 0 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 17, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 12, 'r11': 30, 'r12': 100, 'r13': 11, 'r14': 16, 'r15': 4094 	  ('11'@Opcode.INC:Register.r10 0)
+  DEBUG emulator:simulation TICK: 334 PC:  12  MEM_OUT: r12 r11 reg: 'r0': 0, 'r1': 0, 'r2': 0, 'r3': 0, 'r4': 17, 'r5': 0, 'r6': 0, 'r7': 0, 'r8': 0, 'r9': 13, 'r10': 13, 'r11': 30, 'r12': 100, 'r13': 12, 'r14': Register.r10, 'r15': 4094 	  ('12'@Opcode.LD:Register.r12 Register.r11)
 ```
 Интеграционные тесты реализованы тут [integration_test](./integration_test.py) в двух вариантах:
 
@@ -361,9 +365,9 @@ integration_test.py::test_translator_and_machine[golden/hello_world.yml] PASSED 
 ```
 
 ```text
-| Верещагин Егор Сергеевич       | hello      |  | 2 |          | 17         | 102    | 326   |
-| Верещагин Егор Сергеевич       | prob_5     |  | 13|          | 178        | 10890  | 36791 |
-| Верещагин Егор Сергеевич       | hello_user |  | 7 |          | 88         | 270    | 867   |
+| Верещагин Егор Сергеевич       | hello      |  | 2 |          | 17         | 102    | 356   |
+| Верещагин Егор Сергеевич       | prob_5     |  | 13|          | 178        | 10890  | 37629 |
+| Верещагин Егор Сергеевич       | hello_user |  | 7 |          | 88         | 276    | 968   |
 
 ```
 
