@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import sys
 
-from interpreter.parser import AstNode, AstType, parse
 from machine.isa import Opcode, Register, StaticMemAddressStub, Word, write_code
+
+from interpreter.parser import AstNode, AstType, parse
 
 
 class WrongTokenTypeError(Exception):
@@ -52,10 +53,10 @@ class Program:
         self.input_buffer_size = 32
 
     def add_instruction(
-        self,
-        opcode: Opcode,
-        arg1: int | Register | StaticMemAddressStub = 0,
-        arg2: int | Register | StaticMemAddressStub = 0,
+            self,
+            opcode: Opcode,
+            arg1: int | Register | StaticMemAddressStub = 0,
+            arg2: int | Register | StaticMemAddressStub = 0,
     ) -> int:
         self.machine_code.append(Word(self.current_command_address, opcode, arg1, arg2))
         self.current_command_address += 1
@@ -94,13 +95,16 @@ class Program:
     def get_variable_offset(self, name: str) -> int | None:
         return self.variables.get(name)
 
-    def resolve_static_mem(self) -> None:
+    def _add_strings_in_static_mem(self):
         static_mem_start = self.current_command_address
         for instruction in self.machine_code:
             if isinstance(instruction.arg1, StaticMemAddressStub) and instruction.arg1.offset >= 0:
                 instruction.arg1 = instruction.arg1.offset + static_mem_start
             if isinstance(instruction.arg2, StaticMemAddressStub) and instruction.arg2.offset >= 0:
                 instruction.arg2 = instruction.arg2.offset + static_mem_start
+
+    def resolve_static_mem(self) -> None:
+        self._add_strings_in_static_mem()
         for data in self.static_mem:
             self.add_instruction(Opcode.JUMP, data)
         static_mem_end = self.current_command_address - 1
