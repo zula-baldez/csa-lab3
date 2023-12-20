@@ -70,16 +70,16 @@ class Register(Enum):
 
 sp: Register = Register.r15
 
-dr: Register = Register.r14
-
-pc: Register = Register.r13
+pc: Register = Register.r14
 
 
 class StaticMemAddressStub:
-    offset: int
+    offset: int  # -1  означает последний элемент после всей статической памяти
 
     def __init__(self, offset: int = 0):
         self.offset = offset
+
+
 
 
 class Word:

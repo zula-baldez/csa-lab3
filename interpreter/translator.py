@@ -95,16 +95,21 @@ class Program:
         return self.variables.get(name)
 
     def resolve_static_mem(self) -> None:
-        for buf_offset in range(0, self.input_buffer_size):
-            self.add_instruction(Opcode.JUMP, 0)
         static_mem_start = self.current_command_address
         for instruction in self.machine_code:
-            if isinstance(instruction.arg1, StaticMemAddressStub):
+            if isinstance(instruction.arg1, StaticMemAddressStub) and instruction.arg1.offset >= 0:
                 instruction.arg1 = instruction.arg1.offset + static_mem_start
-            if isinstance(instruction.arg2, StaticMemAddressStub):
+            if isinstance(instruction.arg2, StaticMemAddressStub) and instruction.arg2.offset >= 0:
                 instruction.arg2 = instruction.arg2.offset + static_mem_start
         for data in self.static_mem:
             self.add_instruction(Opcode.JUMP, data)
+        static_mem_end = self.current_command_address - 1
+        self.add_instruction(Opcode.JUMP, self.current_command_address + 1)  # begin of read buffer
+        for instruction in self.machine_code:
+            if isinstance(instruction.arg1, StaticMemAddressStub) and instruction.arg1.offset < 0:
+                instruction.arg1 = -instruction.arg1.offset + static_mem_end
+            if isinstance(instruction.arg2, StaticMemAddressStub) and instruction.arg2.offset < 0:
+                instruction.arg2 = -instruction.arg2.offset + static_mem_end
 
     def _change_reg(self) -> Register:
         self.reg_counter += 1
@@ -334,9 +339,11 @@ def ast_to_machine_code_if_or_while(node: AstNode, program: Program) -> None:
 
 
 def ast_to_machine_code_read(program: Program) -> None:
+    program.add_instruction(Opcode.PUSH, Register.r8)
     program.add_instruction(Opcode.LD_LIT, Register.r9, 0)  # прочитанный символ
     program.add_instruction(Opcode.LD_LIT, Register.r11, 0)  # счетчик
-    program.add_instruction(Opcode.LD_LIT, Register.r12, StaticMemAddressStub())
+    program.add_instruction(Opcode.LD_ADDR, Register.r8, StaticMemAddressStub(-1))
+    program.add_instruction(Opcode.MV, Register.r8, Register.r12)  # в r8 адрес начала буфера
     do_while_start = program.current_command_address
     program.add_instruction(Opcode.READ, Register.r9, 0)
     program.add_instruction(Opcode.CMP, Register.r9, Register.r0)
@@ -345,7 +352,12 @@ def ast_to_machine_code_read(program: Program) -> None:
     program.add_instruction(Opcode.INC, Register.r12)
     program.add_instruction(Opcode.ST, Register.r9, Register.r12)
     program.add_instruction(Opcode.JUMP, do_while_start)
-    program.add_instruction(Opcode.ST_ADDR, Register.r11, StaticMemAddressStub())
+    program.add_instruction(Opcode.ST, Register.r11, Register.r8)
+    program.add_instruction(Opcode.MV, Register.r8, Register.r9)  # save read string address in r9
+    program.add_instruction(Opcode.ADD, Register.r8, Register.r11)
+    program.add_instruction(Opcode.INC, Register.r8)
+    program.add_instruction(Opcode.ST_ADDR, Register.r8, StaticMemAddressStub(-1))
+    program.add_instruction(Opcode.POP, Register.r8)
 
 
 def ast_to_machine_code_read_char(program: Program) -> None:
@@ -371,7 +383,7 @@ def ast_to_machine_code_assign(node: AstNode, program: Program) -> None:
             program.clear_variable_in_registers(name)
         elif node.children[1].astType == AstType.READ:
             ast_to_machine_code_read(program)
-            st_literal_by_stack_offset(program, StaticMemAddressStub(), addr)
+            program.add_instruction(Opcode.ST_STACK, Register.r9, addr)  # update var value
             program.clear_variable_in_registers(name)
         elif node.children[1].astType == AstType.READ_CHAR:
             ast_to_machine_code_read_char(program)
@@ -437,7 +449,6 @@ def ast_to_machine_code_print(node: AstNode, program: Program) -> None:
     if node.astType == AstType.PRINT_CHAR:
         ast_to_machine_code_math(node.children[0], program)
         program.add_instruction(Opcode.PRINT, Register.r9, 0)
-
 
 
 def parse_expression(node: AstNode, program: Program) -> int | None:

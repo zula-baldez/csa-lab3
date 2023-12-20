@@ -188,8 +188,8 @@ class ControlUnit:
 
     def ld(self, instr: Word):
         reg_to: Register = instr.arg1
-        reg_from: Register = instr.arg2
-        reg_data: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[reg_from])
+        addr_reg: Register = instr.arg2
+        reg_data: int = self.data_path.perform_arithmetic(Opcode.ADD, 0, self.data_path.registers[addr_reg])
         self.data_path.latch_reg(dr, reg_data)
         self.tick()
         data: Word = self.data_path.memory_perform(True, False)
@@ -410,7 +410,7 @@ def main(code_file, input_file):
     output, instr_counter, ticks = simulation(
         code,
         input_tokens=input_token,
-        limit=10000,
+        limit=100000,
     )
 
     print("".join(output))
