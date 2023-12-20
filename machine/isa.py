@@ -82,8 +82,6 @@ class StaticMemAddressStub:
         self.offset = offset
 
 
-
-
 class Word:
     index: int
     opcode: Opcode
